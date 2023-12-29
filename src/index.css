@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    .resume{
+        width: 793.76px;
+        height: 1100px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .resume p, .resume h1, .resume h2, .resume h3, .resume h4, .resume li, .resume strong, .resume span{
+        font-family: 'Times New Roman', Times, serif;
+    }
+    .top{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding-bottom: .8rem;
+    }
+
+    .left, .right{
+        display: block;
+        padding-top: 3rem;
+        padding-left: 1.2rem;
+    }
+
+    .circle{
+        height: 32px;
+        width: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        border: 1px solid;
+    }
+    input[type="color"]{
+        cursor: pointer;
+        padding: 0;
+        box-sizing: border-box;
+        height: 32px;
+        width: 32px;
+    }
+
+    .custom-list{
+        position: relative;
+    }
+
+    .custom-list::before{
+        content: "\2022";
+        font-size: 1.4rem;
+        position: absolute;
+        left: -18px;
+        top: -4px;
+
+    }
+}
