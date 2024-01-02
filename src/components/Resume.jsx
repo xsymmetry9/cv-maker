@@ -10,7 +10,7 @@ const Resume = ({items, layout, color}) =>{
 
     const PlotSkills = () =>{
         return(
-            <div className = {layout.name === "top" ? "mx-1" : "mx-1"} id="skills">
+            <div className = {layout.name === "top" ? "mx-12" : "mx-1"} id="skills">
                 <div className='flex items-center gap-3 pb-3'>
                     <Circle name = "education" icon = 'fa-solid fa-clipboard-list' color={color.background}/>
                     <h3 className='text-2xl font-bold'>Skills</h3>
@@ -21,7 +21,7 @@ const Resume = ({items, layout, color}) =>{
                                 return(
                                     <li style={{color: color.background}} key = {item.id} className='custom-list | mx-3 grid grid-cols-2'>
                                         <span className='text-black'>{item.text}</span>
-                                        <PlotCircles color ={color.background} level = {item.level}/>
+                                        <PlotCircles level = {item.level}/>
                                     </li>
                                 );
                             })
@@ -45,7 +45,7 @@ const Resume = ({items, layout, color}) =>{
                             return(
                                 <li style={{color: color.background}} key={item.id} className='custom-list | mx-3 grid grid-cols-2'>
                                     <span className='text-black'>{item.name}</span>
-                                    <PlotCircles color ={color.background} level ={item.level} />
+                                    <PlotCircles level ={item.level} />
                                 </li>
                             );
                         })
@@ -65,7 +65,7 @@ const Resume = ({items, layout, color}) =>{
 
                         {layout.name !== "top" && <PersonalImage />}
 
-                        <h2 className={`font-serif ${layout.name === "top" ? "text-center" : "mx-3 mt-7"} text-3xl font-bold`} id='fullName'>{personalInfo.fullName}</h2>
+                        <h2 className={`font-serif ${layout.name === "top" ? "text-center" : "mx-3 mt-7"} text-4xl font-bold`} id='fullName'>{personalInfo.fullName}</h2>
                         <ul id="contactInfo" className={`flex ${layout.nav} gap-3 ml-3 mt-3 pb-[3rem]`}> 
                             <li className='flex gap-2 items-center'>
                                 {/* Add icon here */}
