@@ -23,13 +23,8 @@ function App() {
     nav: "flex-col",
   });
 
-  // name: name,
-  // resumeLayout: "grid-cols-[250px_1fr]",
-  // header: "left order-none",
-  // nav: "flex-col"},
-
   const [color, setColor] = useState({
-    background: "#ff0000",
+    background: "#000000",
     text: "black"
   });
  
