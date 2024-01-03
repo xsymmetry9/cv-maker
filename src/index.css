@@ -6,6 +6,7 @@
     .resume{
         width: 793.76px;
         height: 1100px;
+        margin-inline: auto;
         background-color: #fff;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
