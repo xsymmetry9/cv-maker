@@ -16,6 +16,17 @@ import SideBarNavigation from "./components/SideBarNavigation.jsx";
 import Title from "./components/Title.jsx"
 
 function App() {
+  const [open, setNewPage] = useState(()=>{
+    const initiatePages = {"information": false, "style": false, "preview": false}
+    initiatePages["information"] = true;
+    return initiatePages;
+  })
+  const navControl = (e) =>{
+    setNewPage((prevOpen) => ({...prevOpen, 
+    [e.target.name] : true}))
+    console.log(open);
+  }
+
   const [data, setData] = useState(DEFAULT_DATA);
 
   const [layout, setLayout] = useState({
@@ -339,7 +350,7 @@ function App() {
       <div className= "grid grid-cols-[200px_1fr]">
         <header className="flex flex-col row-span-full bg-stone-600 relative">
           <Title name ="CV Maker"/>
-          <SideBarNavigation data = {["information", "style", "preview"]}/>
+          <SideBarNavigation data = {["information", "style", "preview"]} handle={navControl}/>
         </header>
 
         <div className="hidden">
