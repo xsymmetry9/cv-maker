@@ -2,7 +2,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 
-const SideBarNavigation = ({data}) =>{
+const SideBarNavigation = ({data, handle}) =>{
+
+    console.log(handle);
 
     const getIcon =  (item) =>{
         if(item === "information")
@@ -16,11 +18,11 @@ const SideBarNavigation = ({data}) =>{
             alert("error");
         }
     }
-    const handle = (e) =>{
-        console.log(e.target.name);
+    const test = (e) =>{
+        console.log(e.target.name)
     }
 
-    const Button = ({name}) =>{
+    const Button = ({name, handle}) =>{
         return(
             <button className='flex gap-3 items-center px-3 border-y border-stone-500 hover:bg-stone-500 h-[150px]' name={name} onClick= {handle}>
                 <i className={`fa-solid ${getIcon(name)} text-slate-50`}></i>
@@ -33,7 +35,7 @@ const SideBarNavigation = ({data}) =>{
         <div className="flex flex-col gap-9">
             {data.map((item, index) =>{ 
                 return(
-                    <Button key={index} name = {item}/>)}
+                    <Button key={index} name ={item} handle={handle}/>)}
                     )}
         </div> 
     )
