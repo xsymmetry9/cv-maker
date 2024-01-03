@@ -334,7 +334,12 @@ function App() {
   }
   return (
     <>
-      <div className= "pt-7 grid grid-cols-2">    
+      <div className= "grid grid-cols-[200px_1fr]">
+        <div className="flex flex-col justify-center gap-9 side-bar bg-red-700">
+          <button className="border border-slate-700 h-[150px]">Information</button>
+          <button className="border border-slate-700 h-[150px]">Style</button>
+          <button className="border border-slate-700 h-[150px]">Preview</button>
+        </div>   
         <div className="">
           <InfoForm items = {[
               {key: 'personalInfo', name:'Personal Information', component: <PersonalInformation  data= {data.personalInfo} handleForm={handlePersonal}/>},
