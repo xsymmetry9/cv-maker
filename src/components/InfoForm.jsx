@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState} from 'react';
 
-const ToggleComponent = ({ items}) =>{
+const ToggleComponent = ({items}) =>{
     const [toggledStates, setToggledStates] = useState(() =>{
         const initialStates = new Array(items.length).fill(false);
         initialStates[4] = true;
