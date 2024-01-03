@@ -12,6 +12,8 @@ import Resume from './components/Resume.jsx';
 import InfoForm from "./components/InfoForm.jsx";
 import CustomForm from "./components/CustomForm.jsx"
 import Languages from "./components/pages/Languages.jsx";
+import SideBarNavigation from "./components/SideBarNavigation.jsx";
+import Title from "./components/Title.jsx"
 
 function App() {
   const [data, setData] = useState(DEFAULT_DATA);
@@ -335,12 +337,12 @@ function App() {
   return (
     <>
       <div className= "grid grid-cols-[200px_1fr]">
-        <div className="flex flex-col justify-center gap-9 side-bar bg-red-700">
-          <button className="border border-slate-700 h-[150px]">Information</button>
-          <button className="border border-slate-700 h-[150px]">Style</button>
-          <button className="border border-slate-700 h-[150px]">Preview</button>
-        </div>   
-        <div className="">
+        <header className="flex flex-col row-span-full bg-stone-600 relative">
+          <Title name ="CV Maker"/>
+          <SideBarNavigation data = {["information", "style", "preview"]}/>
+        </header>
+
+        <div className="hidden">
           <InfoForm items = {[
               {key: 'personalInfo', name:'Personal Information', component: <PersonalInformation  data= {data.personalInfo} handleForm={handlePersonal}/>},
               {key: 'education', name:'Education', component: <Education data={data.education} handleEducation = {handleEducation}/>},
@@ -366,7 +368,10 @@ function App() {
           
           </div>
         </div>  
-        <Resume items = {data} layout = {layout} color = {color}/>
+
+        <div className="block">
+          <Resume items = {data} layout = {layout} color = {color}/>
+        </div>
       </div>
 
       
