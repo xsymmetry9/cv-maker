@@ -4,20 +4,33 @@ import React from 'react'
 
 const SideBarNavigation = ({data}) =>{
 
+    const getIcon =  (item) =>{
+        if(item === "information")
+        {
+            return "fa-user-tie"
+        } else if (item === "style"){
+            return "fa-shapes"
+        } else if(item === "preview"){
+            return "fa-magnifying-glass"
+        } else{
+            alert("error");
+        }
+    }
     const handle = (e) =>{
         console.log(e.target.name);
     }
 
     const Button = ({name}) =>{
         return(
-            <button className='border-y border-stone-500 hover:bg-stone-500 h-[150px]' name={name} onClick= {handle}>
+            <button className='flex gap-3 items-center px-3 border-y border-stone-500 hover:bg-stone-500 h-[150px]' name={name} onClick= {handle}>
+                <i className={`fa-solid ${getIcon(name)} text-slate-50`}></i>
                 <span className='font-bold text-slate-50'>{name.toUpperCase()}</span>
             </button>
         )
     }
 
     return(
-        <div className="flex flex-col justify-center gap-9 side-bar bg-stone-600">
+        <div className="flex flex-col gap-9">
             {data.map((item, index) =>{ 
                 return(
                     <Button key={index} name = {item}/>)}
