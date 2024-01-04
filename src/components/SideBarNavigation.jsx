@@ -4,8 +4,6 @@ import React from 'react'
 
 const SideBarNavigation = ({data, handle}) =>{
 
-    console.log(handle);
-
     const getIcon =  (item) =>{
         if(item === "information")
         {
@@ -17,10 +15,7 @@ const SideBarNavigation = ({data, handle}) =>{
         } else{
             alert("error");
         }
-    }
-    const test = (e) =>{
-        console.log(e.target.name)
-    }
+    };
 
     const Button = ({name, handle}) =>{
         return(
@@ -28,9 +23,8 @@ const SideBarNavigation = ({data, handle}) =>{
                 <i className={`fa-solid ${getIcon(name)} text-slate-50`}></i>
                 <span className='font-bold text-slate-50'>{name.toUpperCase()}</span>
             </button>
-        )
-    }
-
+        );
+    };
     return(
         <div className="flex flex-col gap-9">
             {data.map((item, index) =>{ 

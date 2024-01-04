@@ -22,10 +22,11 @@ function App() {
     return initiatePages;
   })
   const navControl = (e) =>{
-    setNewPage((prevOpen) => ({...prevOpen, 
-    [e.target.name] : true}))
-    console.log(open);
+    const initiatePages = {"information": false, "style": false, "preview": false}
+    initiatePages[e.currentTarget.name] = true;
+    setNewPage(initiatePages);
   }
+  console.log(open.information);
 
   const [data, setData] = useState(DEFAULT_DATA);
 
@@ -347,13 +348,13 @@ function App() {
   }
   return (
     <>
-      <div className= "grid grid-cols-[200px_1fr]">
+      <div className= "grid grid-cols-[200px_1fr] h-[100vh]">
         <header className="flex flex-col row-span-full bg-stone-600 relative">
           <Title name ="CV Maker"/>
           <SideBarNavigation data = {["information", "style", "preview"]} handle={navControl}/>
         </header>
 
-        <div className="hidden">
+        <div id="info-page" className={`${open.information ? "block" : "hidden"} overflow-auto`}>
           <InfoForm items = {[
               {key: 'personalInfo', name:'Personal Information', component: <PersonalInformation  data= {data.personalInfo} handleForm={handlePersonal}/>},
               {key: 'education', name:'Education', component: <Education data={data.education} handleEducation = {handleEducation}/>},
@@ -361,9 +362,10 @@ function App() {
               {key: 'experience', name: 'Experience', component: <Experience data = {data.experience} handleExperience = {handleExperience} handleWork = {handleWork}/>},
               {key: 'skills', name: 'Skills', component: <Skills data = {data.skills} handleSkill = {handleSkill}/>},
               {key: 'languages', name: 'Languages', component: <Languages data = {data.language} handle = {handleLanguage}/> }]}/>
+        </div>  
+        <div id="custom-page" className={`${open.style ? "block" : "hidden"} overflow-auto`}>
           <CustomForm items = {[
-            {key: 'top', name: 'top'},{key:'left', name: 'left'},{key:'right', name: 'right'}
-          ]} handle={handleOutline}/>
+            {key: 'top', name: 'top'},{key:'left', name: 'left'},{key:'right', name: 'right'}]} handle={handleOutline}/>
     
           <div id="color" className={`mt-7 w-[500px] mx-auto px-3 py-3`}>
             <h2 className="font-bold text-xl text-center pb-3">Color</h2>
@@ -373,14 +375,11 @@ function App() {
                 <input className =" h-full w-full opacity-0 cursor-pointer" type="color" value={color.background} onChange={handleColor}>
                 </input>
               </div>
- 
             </label>
-            
-          
           </div>
-        </div>  
+        </div>
 
-        <div className="block">
+        <div className={`${open.preview ? "block" : "hidden"} overflow-auto`}>
           <Resume items = {data} layout = {layout} color = {color}/>
         </div>
       </div>
