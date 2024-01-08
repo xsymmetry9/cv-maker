@@ -348,7 +348,7 @@ function App() {
   }
   return (
     <>
-      <div className= "grid grid-cols-[200px_1fr] h-[100vh]">
+      <div className= "grid grid-cols-[200px_1fr] h-[100vh] bg-stone-300">
         <header className="flex flex-col row-span-full bg-stone-600 relative">
           <Title name ="CV Maker"/>
           <SideBarNavigation data = {["information", "style", "preview"]} handle={navControl}/>
@@ -365,11 +365,11 @@ function App() {
         </div>  
         <div id="custom-page" className={`${open.style ? "block" : "hidden"} overflow-auto`}>
           <CustomForm items = {[
-            {key: 'top', name: 'top'},{key:'left', name: 'left'},{key:'right', name: 'right'}]} handle={handleOutline}/>
+            {key: 'top', name: 'top'},{key:'left', name: 'left'},{key:'right', name: 'right'}]} handle={handleOutline} backgroundColor= {color.background}/>
     
-          <div id="color" className={`mt-7 w-[500px] mx-auto px-3 py-3`}>
-            <h2 className="font-bold text-xl text-center pb-3">Color</h2>
-            <label className="flex gap-3 items-center">
+          <div id="color" className={`style-card mt-12 bg-stone-100 shadow shadow-sm shadow-stone-700/50 rounded-md`}>
+            <h2 className="font-bold text-center text-2xl pb-7 pt-3">Color</h2>
+            <label className="flex gap-3 items-center justify-center">
               <span>Accent Color</span>
               <div style ={{backgroundColor: color.background}} className="w-[40px] h-[40px] rounded-full cursor-pointer">
                 <input className =" h-full w-full opacity-0 cursor-pointer" type="color" value={color.background} onChange={handleColor}>

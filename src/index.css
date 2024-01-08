@@ -56,4 +56,12 @@
         top: -4px;
 
     }
+
+    .style-card{
+        display: block;
+        margin-inline: auto;
+        height: 200px;
+        max-width: 300px;
+        
+    }
 }
