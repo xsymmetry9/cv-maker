@@ -15,6 +15,8 @@ import Languages from "./components/pages/Languages.jsx";
 import SideBarNavigation from "./components/SideBarNavigation.jsx";
 import Title from "./components/Title.jsx"
 
+
+
 function App() {
   const [open, setNewPage] = useState(()=>{
     const initiatePages = {"information": false, "style": false, "preview": false}
@@ -26,16 +28,25 @@ function App() {
     initiatePages[e.currentTarget.name] = true;
     setNewPage(initiatePages);
   }
-  console.log(open.information);
 
   const [data, setData] = useState(DEFAULT_DATA);
 
-  const [layout, setLayout] = useState({
-    name: "left",
-    resumeLayout: "grid-cols-[250px_1fr]",
-    header: "left order-none",
-    nav: "flex-col",
-  });
+  const [layout, setLayout] = useState([
+    {name: "left", resumeLayout: "grid-cols-[250px_1fr]", header: "left order-none", nav: "flex-col", isSelected: false},
+    {name: "right", resumeLayout: "grid-cols-[1fr_250px]", header: "right order-last", nav: "flex-col", isSelected: false}, 
+    {name: "top", resumeLayout: "", header: "top order-none", nav: "justify-center", isSelected: true}]);
+
+  const getLayout = () =>{
+      let obj;
+      layout.forEach((item) =>{
+          if(item.isSelected){
+              obj = item;
+          }
+      })
+      return obj;
+  }
+
+ let obj = getLayout();
 
   const [color, setColor] = useState({
     background: "#000000",
@@ -287,49 +298,13 @@ function App() {
   const handleOutline = (e) =>
   {
     const name = e.currentTarget.name;
-    if(name == "top")
-    {
-      setLayout({...layout,
-        name: name,
-        resumeLayout: "",
-        header: "top order-none",
-        nav: "justify-center"});
-      } else if(name === "left"){
-        setLayout({...layout,
-          name: name,
-          resumeLayout: "grid-cols-[250px_1fr]",
-          header: "left order-none",
-          nav: "flex-col"},
-        );
-      } else if(name ==="right")
-      {
-        setLayout({...layout,
-          name: name,
-          resumeLayout: "grid-cols-[1fr_250px]",
-          header: "right order-last",
-          nav: "flex-col"});
-      }
-    }
-
-  useEffect(() => {
-    const getSection = document.getElementById("resume-layout");
-    
-    // Remove all classes starting with 'grid-cols-'
-    getSection.classList.remove(...Array.from(getSection.classList).filter(className => className.startsWith('grid-cols-')));
-    // Add the new class
-    // getSection.classList.add(layout.resumeLayout);
-    getSection.className += ` ${layout.resumeLayout}`;
-    const getHeader = document.getElementById("personal-info");
-    // Remove all classes starting with 'order-'
-    getHeader.classList.remove(...Array.from(getHeader.classList).
-      filter(className => className.startsWith('order-') || className.startsWith("top") || className.startsWith("left") || className.startsWith("right")));
-    // Add the new class
-    getHeader.className += ` ${layout.header}`;
-    const getNav = document.getElementById("contactInfo");
-    getNav.classList.remove(...Array.from(getNav.classList).filter(className=> className.startsWith('flex-') || className.startsWith('justify-')));
-    getNav.classList.add(layout.nav);
-  }, [layout.resumeLayout, layout.header, layout.nav]);
-  
+    setLayout(
+      layout.map((item) => {
+        return {...item, isSelected: item.name === name,
+        };
+      })
+    );
+  };
   
   // const hexToRgb = (hex) =>{
   //   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -353,8 +328,8 @@ function App() {
           <Title name ="CV Maker"/>
           <SideBarNavigation data = {["information", "style", "preview"]} handle={navControl}/>
         </header>
-
-        <div id="info-page" className={`${open.information ? "block" : "hidden"} overflow-auto`}>
+        <div className="grid grid-cols-2 overflow-auto">
+          <div id="info-page" className={`${open.information ? "block" : "hidden"} overflow-auto`}>
           <InfoForm items = {[
               {key: 'personalInfo', name:'Personal Information', component: <PersonalInformation  data= {data.personalInfo} handleForm={handlePersonal}/>},
               {key: 'education', name:'Education', component: <Education data={data.education} handleEducation = {handleEducation}/>},
@@ -362,9 +337,9 @@ function App() {
               {key: 'experience', name: 'Experience', component: <Experience data = {data.experience} handleExperience = {handleExperience} handleWork = {handleWork}/>},
               {key: 'skills', name: 'Skills', component: <Skills data = {data.skills} handleSkill = {handleSkill}/>},
               {key: 'languages', name: 'Languages', component: <Languages data = {data.language} handle = {handleLanguage}/> }]}/>
-        </div>  
-        <div id="custom-page" className={`${open.style ? "block" : "hidden"} overflow-auto`}>
-          <CustomForm items = {[
+          </div>  
+          <div id="custom-page" className={`${open.style ? "block" : "hidden"} overflow-auto`}>
+          <CustomForm layout = {layout} items = {[
             {key: 'top', name: 'top'},{key:'left', name: 'left'},{key:'right', name: 'right'}]} handle={handleOutline} backgroundColor= {color.background}/>
     
           <div id="color" className={`style-card mt-12 bg-stone-100 shadow shadow-sm shadow-stone-700/50 rounded-md`}>
@@ -377,11 +352,15 @@ function App() {
               </div>
             </label>
           </div>
+          </div>
+          <div className={`block overflow-auto`}>
+          <Resume items = {data} layout = {obj} color = {color}/>
+        </div>
         </div>
 
-        <div className={`${open.preview ? "block" : "hidden"} overflow-auto`}>
-          <Resume items = {data} layout = {layout} color = {color}/>
-        </div>
+     
+
+  
       </div>
 
       

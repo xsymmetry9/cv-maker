@@ -7,10 +7,13 @@ import PersonalImage from '../components/PersonalImage'
 
 const Resume = ({items, layout, color}) =>{
     const {personalInfo, summary, education, experience, language, skills} = items;
+    const {name, header, resumeLayout, nav} = layout;
+
+    console.log(layout);
 
     const PlotSkills = () =>{
         return(
-            <div className = {layout.name === "top" ? "mx-12" : "mx-1"} id="skills">
+            <div className = {name === "top" ? "mx-12" : "mx-1"} id="skills">
                 <div className='flex items-center gap-3 pb-3'>
                     <Circle name = "education" icon = 'fa-solid fa-clipboard-list' color={color.background}/>
                     <h3 className='text-2xl font-bold'>Skills</h3>
@@ -29,12 +32,11 @@ const Resume = ({items, layout, color}) =>{
                     </ul>
                 </div>
         )
-       
     }
 
     const PlotLanguages = () =>{
         return(
-            <div className ={layout.name === "top" ? "mx-12" : "mx-1 pb-[3rem]"} id='languages'>
+            <div className ={name === "top" ? "mx-12" : "mx-1 pb-[3rem]"} id='languages'>
                 <div className= "flex items-center gap-3 pb-3">
                     <Circle name = "education" icon = 'fa-solid fa-earth-asia' color={color.background}/>
                     <h3 className= 'text-2xl font-bold'>Languages</h3>
@@ -57,18 +59,17 @@ const Resume = ({items, layout, color}) =>{
 
     return (
         <>
-            <div className = {`resume grid ${layout.resumeLayout}`} id="resume-layout">
+            <div className = {`resume grid ${resumeLayout}`} id="resume-layout">
                 <div 
                     id="personal-info"
                     style={{borderColor:color.background, color:color.text}}
-                    className = {`shadow ${layout.header} ${layout.name === "top" ? " border-b-2" :  "border-none"} bg-slate-50`}>
+                    className = {`shadow ${header} ${name === "top" ? " border-b-2" :  "border-none"} bg-slate-50`}>
 
-                        {layout.name !== "top" && <PersonalImage />}
+                        {name !== "top" && <PersonalImage />}
 
-                        <h2 className={`font-serif ${layout.name === "top" ? "text-center" : "mx-3 mt-7"} text-4xl font-bold`} id='fullName'>{personalInfo.fullName}</h2>
-                        <ul id="contactInfo" className={`flex ${layout.nav} gap-3 ml-3 mt-3 pb-[3rem]`}> 
+                        <h2 className={`font-serif ${name === "top" ? "text-center" : "mx-3 mt-7"} text-4xl font-bold`} id='fullName'>{personalInfo.fullName}</h2>
+                        <ul id="contactInfo" className={`flex ${nav} gap-3 ml-3 mt-3 pb-[3rem]`}> 
                             <li className='flex gap-2 items-center'>
-                                {/* Add icon here */}
                                 <i className='fa-solid fa-phone'></i>
                                 {personalInfo.contact.phone}
                             </li>  
@@ -83,8 +84,8 @@ const Resume = ({items, layout, color}) =>{
                                 <i className='fa-solid fa-location-dot'></i>
                                 {personalInfo.location.city}, {personalInfo.location.country}</li>
                         </ul>
-                        {layout.name !== "top" &&  <PlotLanguages/>}
-                        {layout.name !== "top" && <PlotSkills/>}
+                        {name !== "top" &&  <PlotLanguages/>}
+                        {name !== "top" && <PlotSkills/>}
                 </div>
                 <div className="grid grid-cols-1">
                     <div className= "mt-7 px-12" id="about">
@@ -151,7 +152,7 @@ const Resume = ({items, layout, color}) =>{
                             }
                         </ul>
                     </div>
-                    {layout.name === "top" && <div className="grid grid-cols-2" id='skills'>
+                    {name === "top" && <div className="grid grid-cols-2" id='skills'>
                         <PlotLanguages />
                         <PlotSkills/>
                     </div>}
