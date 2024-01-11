@@ -3,22 +3,21 @@
 @tailwind utilities;
 
 @layer base{
+    p, li{
+        font-size: .9rem;
+        line-height: 1.3;
+    }
     .resume{
-        width: 793.76px;
-        height: 1100px;
+        width: 21cm;
+        min-height: 29.7cm;
+        margin: 1cm auto;
         margin-inline: auto;
         background-color: #fff;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    .resume p, .resume h1, .resume h2, .resume h3, .resume h4, .resume li, .resume strong, .resume span{
-        font-family: 'Times New Roman', Times, serif;
-    }
     .top{
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding-bottom: .8rem;
+        
     }
 
     .left, .right{
