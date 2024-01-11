@@ -4,18 +4,18 @@ import Summary from "../src/components/pages/Summary.jsx";
 import Skills from "./components/pages/Skills.jsx";
 import Experience from "./components/pages/Experience.jsx";
 import Education from "./components/pages/Education.jsx";
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import uuid4 from "uuid4";
 import {format} from 'date-fns'
 import './index.css'
 import Resume from './components/Resume.jsx';
 import InfoForm from "./components/InfoForm.jsx";
-import CustomForm from "./components/CustomForm.jsx"
+import CustomForm from "./components/CustomForm.jsx";
+import ColorForm from './components/ColorForm.jsx';
+import FontForm from "./components/FontForm.jsx"
 import Languages from "./components/pages/Languages.jsx";
 import SideBarNavigation from "./components/SideBarNavigation.jsx";
-import Title from "./components/Title.jsx"
-
-
+import Title from "./components/Title.jsx";
 
 function App() {
   const [open, setNewPage] = useState(()=>{
@@ -32,10 +32,9 @@ function App() {
   const [data, setData] = useState(DEFAULT_DATA);
 
   const [layout, setLayout] = useState([
-    {name: "left", resumeLayout: "grid-cols-[250px_1fr]", header: "left order-none", nav: "flex-col", isSelected: false},
-    {name: "right", resumeLayout: "grid-cols-[1fr_250px]", header: "right order-last", nav: "flex-col", isSelected: false}, 
-    {name: "top", resumeLayout: "", header: "top order-none", nav: "justify-center", isSelected: true}]);
-
+    {name: "left", resumeLayout: "grid grid-cols-[250px_1fr]", header: "left | order-none", nav: "flex-col", isSelected: false},
+    {name: "right", resumeLayout: "grid grid-cols-[1fr_250px]", header: "right | order-last", nav: "flex-col", isSelected: false}, 
+    {name: "top", resumeLayout: "", header: "top | block order-none", nav: "justify-center pb-3", isSelected: true}]);
   const getLayout = () =>{
       let obj;
       layout.forEach((item) =>{
@@ -52,6 +51,22 @@ function App() {
     background: "#000000",
     text: "black"
   });
+  const [font, changeFont] = useState(
+  [  {name: "serif", isSelected: true},
+    {name: "mono", isSelected: false},
+    {name: "sans", isSelected: false}]
+  )
+  const getFont = () =>{
+    let temp;
+    font.forEach((item) =>{
+      if(item.isSelected)
+      {
+        temp = item;
+      }
+    });
+    return temp;
+  };
+  let setFont = getFont();
  
   const handlePersonal = {
     handle: (e) =>{
@@ -316,11 +331,19 @@ function App() {
   // }
 
   const handleColor = (e) =>{
-    // const hex = e.currentTarget.value;
-
     setColor({...color, 
       background: e.currentTarget.value})
   }
+
+  const handleFont = (e) =>{
+    const name = e.currentTarget.name;
+    changeFont(
+      font.map((item) => {
+        return {...item, isSelected: item.name === name,
+        };
+      })
+    );
+  };
   return (
     <>
       <div className= "grid grid-cols-[200px_1fr] h-[100vh] bg-stone-300">
@@ -329,41 +352,30 @@ function App() {
           <SideBarNavigation data = {["information", "style", "preview"]} handle={navControl}/>
         </header>
         <div className="grid grid-cols-2 overflow-auto">
+          {/* Input Information */}
           <div id="info-page" className={`${open.information ? "block" : "hidden"} overflow-auto`}>
-          <InfoForm items = {[
-              {key: 'personalInfo', name:'Personal Information', component: <PersonalInformation  data= {data.personalInfo} handleForm={handlePersonal}/>},
-              {key: 'education', name:'Education', component: <Education data={data.education} handleEducation = {handleEducation}/>},
-              {key: 'summary', name: 'Summary',  component: <Summary data={data.summary} handleForm = {handlePersonal.handleAbout} />},
-              {key: 'experience', name: 'Experience', component: <Experience data = {data.experience} handleExperience = {handleExperience} handleWork = {handleWork}/>},
-              {key: 'skills', name: 'Skills', component: <Skills data = {data.skills} handleSkill = {handleSkill}/>},
-              {key: 'languages', name: 'Languages', component: <Languages data = {data.language} handle = {handleLanguage}/> }]}/>
+            <InfoForm items = {[
+                {key: 'personalInfo', name:'Personal Information', component: <PersonalInformation  data= {data.personalInfo} handleForm={handlePersonal}/>},
+                {key: 'education', name:'Education', component: <Education data={data.education} handleEducation = {handleEducation}/>},
+                {key: 'summary', name: 'Summary',  component: <Summary data={data.summary} handleForm = {handlePersonal.handleAbout} />},
+                {key: 'experience', name: 'Experience', component: <Experience data = {data.experience} handleExperience = {handleExperience} handleWork = {handleWork}/>},
+                {key: 'skills', name: 'Skills', component: <Skills data = {data.skills} handleSkill = {handleSkill}/>},
+                {key: 'languages', name: 'Languages', component: <Languages data = {data.language} handle = {handleLanguage}/> }]}/>
           </div>  
+          {/* Customizable */}
           <div id="custom-page" className={`${open.style ? "block" : "hidden"} overflow-auto`}>
-          <CustomForm layout = {layout} items = {[
-            {key: 'top', name: 'top'},{key:'left', name: 'left'},{key:'right', name: 'right'}]} handle={handleOutline} backgroundColor= {color.background}/>
-    
-          <div id="color" className={`style-card mt-12 bg-stone-100 shadow shadow-sm shadow-stone-700/50 rounded-md`}>
-            <h2 className="font-bold text-center text-2xl pb-7 pt-3">Color</h2>
-            <label className="flex gap-3 items-center justify-center">
-              <span>Accent Color</span>
-              <div style ={{backgroundColor: color.background}} className="w-[40px] h-[40px] rounded-full cursor-pointer">
-                <input className =" h-full w-full opacity-0 cursor-pointer" type="color" value={color.background} onChange={handleColor}>
-                </input>
-              </div>
-            </label>
+            <CustomForm layout = {layout} items = {[
+              {key: 'top', name: 'top'},{key:'left', name: 'left'},{key:'right', name: 'right'}]} handle={handleOutline} backgroundColor= {color.background}/>
+            <ColorForm color = {color} handle = {handleColor}/>
+            <FontForm font ={font} handle={handleFont} />
           </div>
-          </div>
+
+          {/* Resume  */}
           <div className={`block overflow-auto`}>
-          <Resume items = {data} layout = {obj} color = {color}/>
+            <Resume items = {data} layout = {obj} color = {color} font = {setFont} />
+          </div>
         </div>
-        </div>
-
-     
-
-  
       </div>
-
-      
     </>
   )
 }

@@ -5,18 +5,19 @@ import Circle from '../components/Circle'
 import PlotCircles from '../components/PlotCircles'
 import PersonalImage from '../components/PersonalImage'
 
-const Resume = ({items, layout, color}) =>{
+const Resume = ({items, layout, color, font}) =>{
     const {personalInfo, summary, education, experience, language, skills} = items;
     const {name, header, resumeLayout, nav} = layout;
 
-    console.log(layout);
+    console.log(font);
+
 
     const PlotSkills = () =>{
         return(
             <div className = {name === "top" ? "mx-12" : "mx-1"} id="skills">
                 <div className='flex items-center gap-3 pb-3'>
                     <Circle name = "education" icon = 'fa-solid fa-clipboard-list' color={color.background}/>
-                    <h3 className='text-2xl font-bold'>Skills</h3>
+                    <h3 className='text-xl font-bold'>Skills</h3>
                 </div>
                     <ul role='list'>
                         {
@@ -39,7 +40,7 @@ const Resume = ({items, layout, color}) =>{
             <div className ={name === "top" ? "mx-12" : "mx-1 pb-[3rem]"} id='languages'>
                 <div className= "flex items-center gap-3 pb-3">
                     <Circle name = "education" icon = 'fa-solid fa-earth-asia' color={color.background}/>
-                    <h3 className= 'text-2xl font-bold'>Languages</h3>
+                    <h3 className= 'text-xl font-bold'>Languages</h3>
                 </div>
                 <ul role='list' id="languages">
                     {
@@ -59,7 +60,7 @@ const Resume = ({items, layout, color}) =>{
 
     return (
         <>
-            <div className = {`resume grid ${resumeLayout}`} id="resume-layout">
+            <div className = {`resume ${resumeLayout} font-${font.name}`} id="resume-layout">
                 <div 
                     id="personal-info"
                     style={{borderColor:color.background, color:color.text}}
@@ -67,8 +68,8 @@ const Resume = ({items, layout, color}) =>{
 
                         {name !== "top" && <PersonalImage />}
 
-                        <h2 className={`font-serif ${name === "top" ? "text-center" : "mx-3 mt-7"} text-4xl font-bold`} id='fullName'>{personalInfo.fullName}</h2>
-                        <ul id="contactInfo" className={`flex ${nav} gap-3 ml-3 mt-3 pb-[3rem]`}> 
+                        <h2 className={`${name === "top" ? "text-center pt-7" : "mx-3"} text-4xl font-bold`} id='fullName'>{personalInfo.fullName}</h2>
+                        <ul id="contactInfo" className={`flex ${nav} gap-3 ml-3 mt-3`}> 
                             <li className='flex gap-2 items-center'>
                                 <i className='fa-solid fa-phone'></i>
                                 {personalInfo.contact.phone}
@@ -87,18 +88,18 @@ const Resume = ({items, layout, color}) =>{
                         {name !== "top" &&  <PlotLanguages/>}
                         {name !== "top" && <PlotSkills/>}
                 </div>
-                <div className="grid grid-cols-1">
+                <div className="block" id="content-info">
                     <div className= "mt-7 px-12" id="about">
                         <div className='flex items-center gap-3 pb-3'>
                             <Circle name ="about" icon ="fa-solid fa-user" color={color.background}/>
-                            <h3 className='text-2xl font-bold'>About me</h3>
+                            <h3 className='text-xl font-bold'>About me</h3>
                         </div>
                         <p>{summary}</p>
                     </div>
-                    <div className= "px-12" id="education">
+                    <div className= "mt-7 px-12" id="education">
                         <div className='flex items-center gap-3 pb-3'>
                             <Circle name = "education" icon = 'fa-solid fa-lightbulb' color={color.background}/>
-                            <h3 className='text-2xl font-bold'>Education</h3>
+                            <h3 className='text-xl font-bold'>Education</h3>
                         </div>
                         <ul className='grid grid-col-1 gap-2'>
                             {
@@ -118,10 +119,10 @@ const Resume = ({items, layout, color}) =>{
                             }
                         </ul>
                     </div> 
-                    <div className= "px-12" id="experience">
+                    <div className= "mt-7 px-12" id="experience">
                         <div className='flex items-center gap-3 pb-3'>
                             <Circle name ="experience" icon ="fa-solid fa-briefcase" color={color.background}/>
-                            <h3 className='text-2xl font-bold'>Experience</h3>
+                            <h3 className='text-xl font-bold'>Experience</h3>
                         </div>
 
                         <ul className="grid grid-col-1 gap-3">
@@ -152,7 +153,7 @@ const Resume = ({items, layout, color}) =>{
                             }
                         </ul>
                     </div>
-                    {name === "top" && <div className="grid grid-cols-2" id='skills'>
+                    {name === "top" && <div className="grid grid-cols-2 mt-7" id='skills-languages'>
                         <PlotLanguages />
                         <PlotSkills/>
                     </div>}
