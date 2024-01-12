@@ -5,13 +5,23 @@ import React from 'react'
 const SideBarNavigation = ({data, handle}) =>{
 
     const getIcon =  (item) =>{
-        if(item === "information")
+        if(item === "new")
         {
-            return "fa-user-tie"
+            return "fa-regular fa-square-plus";
+        }
+        else if(item === "save")
+        {
+            return "fa-regular fa-floppy-disk";
+        }
+        else if(item === "information")
+        {
+            return "fa-user-tie";
         } else if (item === "style"){
-            return "fa-shapes"
+            return "fa-shapes";
         } else if(item === "preview"){
-            return "fa-magnifying-glass"
+            return "fa-magnifying-glass";
+        } else if(item === "resume"){
+            return "fa-solid fa-user";
         } else{
             alert("error");
         }
