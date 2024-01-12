@@ -349,11 +349,11 @@ function App() {
       <div className= "grid grid-cols-[200px_1fr] h-[100vh] bg-stone-300">
         <header className="flex flex-col row-span-full bg-stone-600 relative">
           <Title name ="CV Maker"/>
-          <SideBarNavigation data = {["information", "style", "preview"]} handle={navControl}/>
+          <SideBarNavigation data = {["new","save","information", "style", "preview","resume"]} handle={navControl}/>
         </header>
-        <div className="grid grid-cols-2 overflow-auto">
+        <div className="grid grid-flow-col overflow-auto">
           {/* Input Information */}
-          <div id="info-page" className={`${open.information ? "block" : "hidden"} overflow-auto`}>
+          <div id="info-page" className={`${open.information ? "block" : "hidden"} w-[700px] mx-auto overflow-auto`}>
             <InfoForm items = {[
                 {key: 'personalInfo', name:'Personal Information', component: <PersonalInformation  data= {data.personalInfo} handleForm={handlePersonal}/>},
                 {key: 'education', name:'Education', component: <Education data={data.education} handleEducation = {handleEducation}/>},
@@ -363,7 +363,7 @@ function App() {
                 {key: 'languages', name: 'Languages', component: <Languages data = {data.language} handle = {handleLanguage}/> }]}/>
           </div>  
           {/* Customizable */}
-          <div id="custom-page" className={`${open.style ? "block" : "hidden"} overflow-auto`}>
+          <div id="custom-page" className={`${open.style ? "block" : "hidden"} w-[700px] mx-auto overflow-auto`}>
             <CustomForm layout = {layout} items = {[
               {key: 'top', name: 'top'},{key:'left', name: 'left'},{key:'right', name: 'right'}]} handle={handleOutline} backgroundColor= {color.background}/>
             <ColorForm color = {color} handle = {handleColor}/>
