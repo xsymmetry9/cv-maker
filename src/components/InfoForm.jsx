@@ -18,7 +18,7 @@ const ToggleComponent = ({items}) =>{
     }
 
     return(
-        <div className="mt-12 mx-auto flex flex-col w-full max-w-screen-md">
+        <div className="mt-12 mx-auto flex flex-col w-[600px] max-w-screen-md">
             {
                 items.map((item, index) => (
                     <div key={index}>
