@@ -22,14 +22,14 @@ const ToggleComponent = ({items}) =>{
             {
                 items.map((item, index) => (
                     <div key={index}>
-                        <div className={`pl-4 py-4 flex justify-between bg-slate-600 hover:bg-slate-600/50 border border-slate-300`}>
+                        <div className={`pl-4 py-4 flex justify-between bg-stone-600 hover:bg-stone-600/50 border border-stone-300`}>
                            <h3 className='text-white font-semibold'>{item.name}</h3>
                            <button 
                                 className="w-14 text-white font-semibold text-lg" 
                                 onClick={() => navHandler(index)}>{toggledStates[index] ? '↑' : '↓'}
                             </button>
                         </div>
-                        <div className= {`border border-x-slate-400 ${toggledStates[index] ? 'block' : 'hidden'}`}>
+                        <div className= {`border border-x-stone-300 bg-stone-50 ${toggledStates[index] ? 'block' : 'hidden'}`}>
                             {item.component}
                         </div>
                     </div>
