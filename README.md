@@ -7,7 +7,7 @@ An Odin Project
 Things to work on:
 1. Information
     - Create a nav bar at the top
-    - Add a save button that will save it to the system
+    x Add a save button that will save it to the system
     - Add a place where you can upload a picture
 2. Style 
     x Be able to change fonts
@@ -16,6 +16,8 @@ Things to work on:
 3. Preview
     - Add a save button
     - Add a print button
+4. Overall
+    - Organize code - Seperate Form and Resume in different folders
     
 Powered by: 
 1. REACT

@@ -18,15 +18,31 @@ import SideBarNavigation from "./components/SideBarNavigation.jsx";
 import Title from "./components/Title.jsx";
 
 function App() {
+  const CV = (item1, description) ={
+    name: item1,
+    description: description
+  }
   const [open, setNewPage] = useState(()=>{
     const initiatePages = {"information": false, "style": false, "preview": false}
     initiatePages["information"] = true;
     return initiatePages;
   })
   const navControl = (e) =>{
-    const initiatePages = {"information": false, "style": false, "preview": false}
-    initiatePages[e.currentTarget.name] = true;
-    setNewPage(initiatePages);
+    const name = e.currentTarget.name;
+    if(name === "information" || name === "style" || name === "preview")
+    {
+      const initiatePages = {"information": false, "style": false, "preview": false}
+      initiatePages[e.currentTarget.name] = true;
+      setNewPage(initiatePages);
+    } else if(name === "new")
+      {
+        newResume();
+    } else{
+      console.log(name);
+    }
+  }
+  const newResume = () =>{
+    console.log(DEFAULT_DATA);
   }
 
   const [data, setData] = useState(DEFAULT_DATA);
