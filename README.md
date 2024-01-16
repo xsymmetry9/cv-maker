@@ -1,6 +1,6 @@
-# A simple CV-maker 
+# Project: CV Application
 
-An Odin Project
+This is my first React Project.  I used very basic concept such props, components, and useState.
 
 [Live website](https://loquacious-paprenjak-b23565.netlify.app/)
 

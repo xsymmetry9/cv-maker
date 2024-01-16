@@ -18,10 +18,6 @@ import SideBarNavigation from "./components/SideBarNavigation.jsx";
 import Title from "./components/Title.jsx";
 
 function App() {
-  const CV = (item1, description) ={
-    name: item1,
-    description: description
-  }
   const [open, setNewPage] = useState(()=>{
     const initiatePages = {"information": false, "style": false, "preview": false}
     initiatePages["information"] = true;
