@@ -10,17 +10,24 @@
 <body>
     <main>
         <div id="content">
-            <form action="">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name">
+            <div class="form-container">
+                <form action="">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" placeholder="Justin">
 
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="terry@gmail.com">
 
-                <label for="summary">Summary</label>
-                <textarea name="summary" id="" cols="30" rows="10"></textarea>
+                    <label for="summary">Summary</label>
+                    <textarea name="summary" id="summary" cols="30" rows="10"></textarea>
+                </form>
+            </div>
+            <div class="preview-container">
+                <h2 id="preview-name">[Default name]</h2>
+                <p id="preview-email">[Default email]</p>
+                <p id="preview-summary">[Default summary]</p>
+            </div>
 
-            </form>
     </div>
     </main>
     <script src="index.js" defer></script>
