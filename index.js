@@ -1,9 +1,9 @@
 const plot = () => {
     const container = document.getElementById("content");
 
-    const heading = document.createElement("h1");
-    heading.textContent = "Hello"
-    container.appendChild(heading);
+    const button = document.createElement("button");
+    button.textContent = "Submit"
+    container.appendChild(button);
 }
 
 plot();
