@@ -3,6 +3,14 @@ const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
 const summaryInput = document.getElementById("summary");
 
+const cvData = {
+    name: "",
+    email: "",
+    summary: "",
+    experience: [],
+    education: [],
+}
+
 let experienceCount = 1;
 let educationCount = 1;
 
@@ -271,11 +279,23 @@ const addEducationHandler = (e) => {
 educationButton.addEventListener(("click"), addEducationHandler);
 
 //Save button
-const plot = () => {
-    const button = document.createElement("button");
-    button.textContent = "Submit"
-    getForm.appendChild(button);
+const submitBtn = document.getElementById("save")
+const submitHandler = (e) =>{
+    e.preventDefault();
+    
+    cvData.name = document.getElementById("name").value;
+    cvData.email = document.getElementById("email").value;
+    cvData.summary = document.getElementById("summary").value;
+
+    const getExperience = document.getElementById("experience");
+
+    const listOfExperiences = Array.from(getExperience.children);
+    
+    listOfExperiences.forEach((item, index) => {
+        console.log(document.getElementById(`company-${index}`));
+    })
+
+
 }
 
-
-plot();
+submitBtn.addEventListener(("click"), submitHandler);
