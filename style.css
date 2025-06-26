@@ -1,7 +1,196 @@
+/* Style Sheet */
+/* By: Gary Lei */
+/* This stylesheet is to style the application called CV Forge.   */
+/* Date: June 26, 2025 */
+
+/* Variables  */
+/* ***Note *** */
+/* I didn't create a new file because @import only works on modern browsers
+Using vanilla CSS can get really messy when project gets bigger and that is why we need to choose frameworks like PostCss or Sass */
+:root {
+    /* Colors */
+    --color-primary: #000;
+    --color-secondary: #fff;
+    --color-accent: blue;
+    --color-danger: red;
+    --color-background: #ffffff;
+    --color-surface: #f5f5f5;
+    --color-text: #333333;
+    --color-muted: #777777;
+/* Typography */
+    --font-family-base: 'Segoe UI', sans-serfis;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-normal: 400;
+    --font-size-weight-bold: 700;
+/* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+/* Borders */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --raidus-lg: 16px;
+/* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+/* Transitions */
+    --transition-default: 0.3s ease-in-out;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+
+body{
+    height: 100vh;
+    width: 100%;
+    background-color: var(--color-background);
+}
+
 h1{
     text-align: center;
 }
-
+h1,h2,h3,h4,h5{
+    line-height: 1.5;
+}
+p, label{
+    font-size: var(--font-size-md);
+}
 .center {
     text-align: center;
+}
+
+.side-nav{
+    box-sizing: border-box;
+    padding: var(--space-sm) var(--space-md);
+    box-shadow: var(--shadow-lg);
+    overflow-y: scroll; 
+    height: 100%;
+}
+.content-container{
+    box-sizing: border-box;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(350px, 450px) 1fr;
+    grid-template-rows: 95vh 1fr;
+}
+input[type="text"], 
+input[type="date"], 
+input[type="email"],
+input[type="tel"],
+textarea{
+    box-sizing: border-box;
+    padding: var(--space-sm) var(--space-md);
+    width: 100%;
+    border: 2px solid var(--color-primary);
+    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-md);
+    margin-top: 6px;
+}
+input:focus, input:hover, textarea{
+    border-color: var(--color-accent);
+}
+footer{
+    width: 100%;
+    align-self: stretch;
+    border-top: 2px solid gray;
+    justify-self: center;
+}
+
+.footer-content{
+    /* max-width: 1100px;
+    width: 100%;
+    margin-inline: auto; */
+}
+
+.footer-content p{
+    text-align: center;
+    font-size: .9775rem;
+    padding-top: 8px;
+}
+
+/* -----------------------------------Buttons ------------------------------------------------------- */
+
+button{
+    cursor: pointer;
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--color-secondary);
+    border: none;
+    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-sm);
+}
+
+.primary-button{
+    border-color: blue;
+}
+.secondary-primary{
+    border-color: green;
+}
+/* ------------------------------------------  Preview Section -------------------------------------- */
+
+.preview-container
+{
+    height: auto;
+    overflow-y: scroll;
+}
+.cv-paper{
+    width: 794px;
+    height: 1123px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    border-radius: 8px;
+}
+
+.cv-name{
+    text-align: center;
+    font-size: 1.6rem;
+}
+
+.cv-title{
+    text-align: center;
+    font-size: .872rem;
+}
+.cv-section-contact{
+    font-size: .872rem;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.cv-section h2{
+    width: 100%;
+    border-bottom: 2px solid black;
+}
+
+.preview-experience-title-container,
+.preview-education-title-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-container{
+    margin-left: 1.76rem;
+}
+
+.preview-education-title{
+    font-weight: 600;
+}
+
+.preview-education-major{
+    color: slate;
+    font-weight: 400;
 }
