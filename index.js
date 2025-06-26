@@ -1,16 +1,91 @@
 const getForm = document.querySelector(".form-container");
 const nameInput = document.getElementById("name");
+const titleInput = document.getElementById("title");
 const emailInput = document.getElementById("email");
+const addressInput = document.getElementById("address");
+const telNumberInput = document.getElementById("tel-number");
 const summaryInput = document.getElementById("summary");
 
-const cvData = {
-    name: "",
-    email: "",
-    summary: "",
-    experience: [],
-    education: [],
+const previewName = document.getElementById("preview-name");
+const previewTitle = document.getElementById("preview-title");
+const previewEmail = document.getElementById("preview-email");
+const previewAddress = document.getElementById("preview-address");
+const previewTelNumber = document.getElementById("preview-tel-number");
+const previewSummary = document.getElementById("preview-summary");
+
+const formattedDate = (date) => {
+    if(!date) return "Invalid Date";
+
+    const getMonth = date.getMonth() + 1; // Returns the month 0 - 11
+    const getDay = date.getDate(); // Returns the date
+    const getYear = date.getFullYear(); // REturns the year
+
+    const formattedDate = `${getMonth}/${getDay}/${getYear}`;
+    return formattedDate;
+}
+const populate = () => {
+    previewName.textContent = cvData.name;
+    previewTitle.textContent = cvData.title;
+    previewEmail.textContent = cvData.email;
+    previewAddress.textContent = cvData.address;
+    previewTelNumber.textContent = cvData.tel_number;
+    previewSummary.textContent = cvData.summary;
 }
 
+const cvData = {
+    "name": "Gary",
+    "title": "A Front-End Engineer Enthusiast",
+    "email": "glswim@gmail.com",
+    "address": "7200 sw 89th st, Miami, FL, 33156",
+   "tel_number": "(786) 208 - 2268",
+    "summary": "A motivated and detail-oriented professional with a passion for technology and continuous learning. Experienced in building responsive web applications and solving real-world problems through clean and efficient code. Adept at working both independently and collaboratively in fast-paced environments",
+    "experience": [
+        {
+            "company": "GEOS",
+            "company_title": "Head Teacher",
+            "start": "07/05/2013",
+            "finish": "Present",
+            "jobs": [
+                "Led curriculum planning and instructional design for over 100 students, improving learning outcomes by 25%",
+                "Mentored and trained new teachers in classroom management and digital teaching tools",
+                "Managed scheduling, performance evaluations, and internal documentation for the academic department",
+                "Implemented digital systems for tracking student progress using spreadsheets and assessment templates",
+                "Collaborated with international staff to streamline communication and create standardized teaching materials"
+            ]
+        }
+    ],
+    "education": [
+        {
+            "school": "University of Massachusetts - Amherst",
+            "degree": "B.A in Economics",
+            "start" : "2005",
+            "finish": "2009"
+        }
+    ],
+    "skills": ["HTML5", "CSS3", "JavaScript", "React", "Git", "Responsive Design"],
+    "languages": [
+        {
+            "name": "English",
+            "level": "proficient"
+        },
+        {
+            "name": "Spanish",
+            "level": "proficient"
+        },
+        {
+            "name": "Chinese",
+            "level": "Intermediate"
+        },
+        {
+            "name": "Chinese Cantonese",
+            "level": "Conversational"
+        }
+    ]
+}
+//Populate data for design
+populate();
+
+//Keeps count
 let experienceCount = 1;
 let educationCount = 1;
 
@@ -18,24 +93,28 @@ let educationCount = 1;
 const nameHandler = (e) => {
     const {name, value} = e.currentTarget;
     const previewInput = document.getElementById(`preview-${name}`);
-    previewInput.textContent= value;
+    previewInput.textContent= value === "" ? cvData[name] : value;
 }
 
 nameInput.addEventListener("input", nameHandler);
 emailInput.addEventListener("input", nameHandler);
 summaryInput.addEventListener("input", nameHandler);
+addressInput.addEventListener("input", nameHandler);
+telNumberInput.addEventListener("input", nameHandler);
+titleInput.addEventListener("input", nameHandler);
+
 
 // Experience Section  
 const buttonExperience = document.querySelector("#btn-experience");
 
 //Creates all inputs for experience
 //It takes what we are inputing
-const createInput = (name, type, index) => {
+const createInput = (titleName, idName, type, index) => {
     const container = document.createElement("label");
-    container.textContent = name;
+    container.textContent = titleName;
     const input = document.createElement("input");
-    input.setAttribute("id", `${name}-${index}`)
-    input.setAttribute("name", `${name}-${index}`);
+    input.setAttribute("id", `${idName}-${index}`)
+    input.setAttribute("name", `${idName}-${index}`);
 
     if(type === "number") input.setAttribute("type", "number");
     else if(type === "date") input.setAttribute("type", "date");
@@ -64,10 +143,10 @@ const createFormExperience = () =>{
         
         //Allows user to input company name, title job, start, and finish
         wrapper.appendChild(title);
-        wrapper.appendChild(createInput("company", "text", currentExperience));
-        wrapper.appendChild(createInput("title", "text", currentExperience));
-        wrapper.appendChild(createInput("start", "date", currentExperience));
-        wrapper.appendChild(createInput("finish", "date", currentExperience));
+        wrapper.appendChild(createInput("Name of company", "company", "text", currentExperience));
+        wrapper.appendChild(createInput("Name of title", "title", "text", currentExperience));
+        wrapper.appendChild(createInput("From", "start", "date", currentExperience));
+        wrapper.appendChild(createInput("To", "finish", "date", currentExperience));
 
         //Adds a button to create a list of responsibilities
         const button = document.createElement("button");
@@ -122,29 +201,15 @@ const createPreview = (index) => {
 
     const wrapper = document.createElement("div");
     wrapper.setAttribute("id", `wrapper-${index}`);
-    const title = document.createElement("p");
-    wrapper.appendChild(title);
-    title.textContent = "[Name of Company]"
-    title.setAttribute("id", `preview-company-${index}`)
 
-    const jobTitle = document.createElement("p");
-    wrapper.appendChild(jobTitle);
-    jobTitle.textContent = "[Job title]";
-    jobTitle.setAttribute("id", `preview-title-${index}`)
-
-    const start = document.createElement("p");
-    start.textContent = `${new Date()}`;
-    start.setAttribute("id", `preview-start-${index}`);
-    wrapper.appendChild(start);
-
-    const finish = document.createElement("p");
-    finish.textContent = `${new Date()}`;
-    finish.setAttribute("id", `preview-finish-${index}`);
-    wrapper.appendChild(finish);  
-
-    const listOfJobDescriptions = document.createElement("ul");
-    listOfJobDescriptions.setAttribute("id", `preview-job-experience-${index}`);
-    wrapper.appendChild(listOfJobDescriptions);
+    wrapper.innerHTML = `
+    <div class="preview-experience-title-container">
+        <p><strong id="preview-company-${index}">[Name of Company]</strong> - <strong id="preview-title-${index}">[Name of Title]</strong></p>
+        <p><span id="preview-start-${index}">${formattedDate(new Date())}</span> - <span id="preview-finish-${index}">${formattedDate(new Date())}</span></p>
+    </div>
+    <ul class="list-container" id="preview-job-experience-${index}"></ul>
+    
+    `;
 
     getContainer.appendChild(wrapper);
 
@@ -166,23 +231,26 @@ const eventHandlers = (index) =>{
     });
 
     readInputStart.addEventListener("input", (e) => {
+        const getDate = e.currentTarget.valueAsDate;
         const getPreviewStart = document.getElementById(`preview-start-${index}`);
-        getPreviewStart.textContent = e.currentTarget.value;
+        getPreviewStart.textContent = formattedDate(getDate);
     });
 
     readInputFinish.addEventListener("input", (e) => {
+        const getDate = e.currentTarget.valueAsDate;
         const getPreviewFinish = document.getElementById(`preview-finish-${index}`);
-        getPreviewFinish.textContent = e.currentTarget.value;
+        getPreviewFinish.textContent = formattedDate(getDate);
+        console.log(formattedDate(getDate));
     });
 
-    eventExperienceHandler(index);
+    // eventExperienceHandler(index);
 }
 
-const eventExperienceHandler = (index) => {
-    const readContainer = document.getElementById(`inputs-job-experience-${index}`);
+// const eventExperienceHandler = (index) => {
+//     const readContainer = document.getElementById(`inputs-job-experience-${index}`);
 
-    console.log(readContainer.querySelectorAll("input"));
-}
+//     console.log(readContainer.querySelectorAll("input"));
+// }
     
 const btnExperienceHandler = (e) => {
     e.preventDefault();
@@ -202,6 +270,7 @@ const btnExperienceHandler = (e) => {
 buttonExperience.addEventListener("click", btnExperienceHandler);
 
 const educationButton = document.getElementById("btn-education");
+
 const addEducationHandler = (e) => {
     e.preventDefault();
 
@@ -217,66 +286,83 @@ const addEducationHandler = (e) => {
     const wrapper = document.createElement("div");
     wrapper.setAttribute("id", `education-${currentEducation}`)
     //Adds Input Entry
+    
     const inputTitle = document.createElement("input");
+    inputTitle.setAttribute("type", "text");
+    inputTitle.setAttribute("name", `nameOfInstitution-${currentEducation}`);
+    inputTitle.setAttribute("id", `nameofInstitution-${currentEducation}`);
     const labelTitle = document.createElement("label");
     labelTitle.textContent = "Name of institution";
+    labelTitle.setAttribute("for", `nameOfInstitution-${currentEducation}`)
+
 
     const inputMajor = document.createElement("input");
-    const labelMajor = document.createElement("label");
+    inputMajor.setAttribute("type", "text");
+    inputMajor.setAttribute("name", `major-${currentEducation}`);
+    inputMajor.setAttribute("id", `major-${currentEducation}`);
+    inputMajor.setAttribute("type", "text");
+    const labelMajor = document.createElement("label");    
     labelMajor.textContent = "Major:";
+    inputMajor.setAttribute("for", `major-${currentEducation}`)
+
 
     const labelDate = document.createElement("label");
     const inputDate = document.createElement("input");
-    inputDate.setAttribute("id", `date-${currentEducation}`);
+    inputDate.setAttribute("id", `education-date-${currentEducation}`);
+    inputDate.setAttribute("name", `education-date-${currentEducation}`)
     inputDate.setAttribute("type", "date");
     labelDate.textContent = "Finish Date";
-    
-    wrapper.appendChild(labelTitle);
-    wrapper.appendChild(inputTitle);
-    wrapper.appendChild(labelMajor);
-    wrapper.appendChild(inputMajor);
-    wrapper.appendChild(labelDate);
-    wrapper.appendChild(inputDate);
+    labelDate.setAttribute("for", `education-date-${currentEducation}`);
+
+    [labelTitle, inputTitle].forEach((item) => wrapper.appendChild(item));
+    [labelMajor, inputMajor].forEach((item) => wrapper.appendChild(item));
+    [labelDate, inputDate].forEach((item) => wrapper.appendChild(item));
 
     getEducationContainer.appendChild(wrapper);
 
     //Adds Preview Education
     const getPreviewEducation = document.getElementById("preview-job-education");
-    const createPreviewWrapper = document.createElement("div");
-    createPreviewWrapper.setAttribute("id", `preview-education-${currentEducation}`);
 
-    const title = document.createElement("p");
-    title.textContent = `Institution-${currentEducation}`;
+    // const createPreviewWrapper = document.createElement("div");
+    // createPreviewWrapper.setAttribute("id", `preview-education-${currentEducation}`);
 
-    const major = document.createElement("p");
-    major.textContent = `Major-${currentEducation}`;
+    const educationLayout = document.createElement("div");
+    educationButton.setAttribute("id", `preview-education-${currentEducation}`);
 
-    const finishedDate = document.createElement("p");
-    finishedDate.textContent = `Date-${currentEducation}`
+    educationLayout.innerHTML = `
+        <div class="preview-education-title-container">
+            <p class="preview-education-title" id="preview-education-major-${currentEducation}">Bachelor Degree of Social Science - Economics</p>
+            <p id="preview-education-finishedDate-${currentEducation}">5/17/2025</p>
+        </div>
+        <p class="preview-education-major" id="preview-education-nameOfInstitution-${currentEducation}">University of Massachusetts - Amherst</p>
+    `;
 
-    createPreviewWrapper.appendChild(title);
-    createPreviewWrapper.appendChild(major);
-    createPreviewWrapper.appendChild(finishedDate);
-    getPreviewEducation.appendChild(createPreviewWrapper);
+    getPreviewEducation.appendChild(educationLayout);
+    // getPreviewEducation.appendChild(createPreviewWrapper);
 
+    // Add even Listener for education
     inputTitle.addEventListener(('input'), (e) => {
-        e.preventDefault();
-        title.textContent = e.currentTarget.value;
+        const getTitle = document.getElementById(`preview-education-nameOfInstitution-${currentEducation}`);
+        getTitle.textContent = e.currentTarget.value;
     });
 
     inputMajor.addEventListener(('input'), (e) => {
-        e.preventDefault();
-        major.textContent = e.currentTarget.value;
+        const getMajor = document.getElementById(`preview-education-major-${currentEducation}`);
+        getMajor.textContent = e.currentTarget.value;
     });
 
     inputDate.addEventListener(("input"), (e) => {
-        e.preventDefault();
-        finishedDate.textContent= e.currentTarget.value;
+        const getDate = document.getElementById(`preview-education-finishedDate-${currentEducation}`);
+        getDate.textContent = formattedDate(e.currentTarget.valueAsDate);
     });
     educationCount++;
 }
 
 educationButton.addEventListener(("click"), addEducationHandler);
+
+// Skills
+
+// Languages
 
 //Save button
 const submitBtn = document.getElementById("save")
