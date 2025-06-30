@@ -361,8 +361,31 @@ const addEducationHandler = (e) => {
 educationButton.addEventListener(("click"), addEducationHandler);
 
 // Skills
+const numOfEntries = 1;
+const skillBtn = document.getElementById("btn-skill");
+skillBtn.addEventListener(("click"), (e) => {
+    e.preventDefault();
+    const currentEntry = numOfEntries;
+
+    const createEntry = document.createElement("label");
+    
+    const input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", `skill-${currentEntry}`);
+
+    input.addEventListener(("input"), (e) => {console.log(e.currentTarget.value)});
+
+
+    createEntry.appendChild(input);
+
+    numOfEntries++;
+});
 
 // Languages
+const languageBtn = document.getElementById("btn-language");
+languageBtn.addEventListener(("click"), (e) => {
+    e.preventDefault();
+});
 
 //Save button
 const submitBtn = document.getElementById("save")
