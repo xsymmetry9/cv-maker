@@ -127,6 +127,27 @@ const createInput = (titleName, idName, type, index) => {
     return container;
 
 }
+
+const deleteExperienceHandler = (e, id) => {
+    e.preventDefault();
+
+    const parent = document.getElementById("experience");
+
+    const child = document.getElementById(`experience-${id}`);
+
+    parent.removeChild(child);
+
+    // Preview Section
+
+    const previewParent = document.getElementById("preview-job-experience");
+    const previewChild = document.getElementById(`wrapper-${id}`);
+
+    previewParent.removeChild(previewChild);
+
+    experienceCount--;
+
+}
+
 // Creates a new Row for Job experience
 const createFormExperience = () =>{
         //Saves the current state.  This is why React is so useful.  UseState() would be used here
@@ -140,9 +161,14 @@ const createFormExperience = () =>{
         //Creates a title for the job section
         const title = document.createElement("h3");
         title.textContent = `Company - ${currentExperience}`;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = "delete";
+        deleteBtn.addEventListener(("click"), (e) => deleteExperienceHandler(e, currentExperience));
         
         //Allows user to input company name, title job, start, and finish
         wrapper.appendChild(title);
+        wrapper.appendChild(deleteBtn);
         wrapper.appendChild(createInput("Name of company", "company", "text", currentExperience));
         wrapper.appendChild(createInput("Name of title", "title", "text", currentExperience));
         wrapper.appendChild(createInput("From", "start", "date", currentExperience));
@@ -157,14 +183,35 @@ const createFormExperience = () =>{
         //Set a counter for job entries
         let jobEntries = 1
 
-        // unOrderedList.appendChild(createInput(`job-entry`, "text", jobEntries));
+        const deleteJobEntryHandler = (e, id) => {
+            e.preventDefault();
+
+            const inputParentEntry = document.getElementById(`inputs-job-experience-${currentExperience}`);
+            const inputChildEntry = document.getElementById(`job-entry-container-${currentExperience}-${id}`);
+
+            inputParentEntry.removeChild(inputChildEntry);
+
+            const previewParentEntry = document.getElementById(`preview-job-experience-${currentExperience}`);
+            const previewChildEntry = document.getElementById(`preview-job-${currentExperience}-entry-${id}`);
+            previewParentEntry.removeChild(previewChildEntry);
+
+            jobEntries--;
+        }
 
         button.addEventListener(("click"), (e) => {
             e.preventDefault();
             if(jobEntries > 3) return;
 
             const currentEntry = jobEntries;
+
+            const deleteJobEntryBtn = document.createElement("button");
+            deleteJobEntryBtn.textContent = "delete";
+
+            deleteJobEntryBtn.addEventListener(("click"), (e) => deleteJobEntryHandler(e, currentEntry));
             //Append an input entry
+
+            const inputEntryContainer = document.createElement("div");
+            inputEntryContainer.setAttribute("id", `job-entry-container-${currentExperience}-${currentEntry}`);
             const label = document.createElement("label");
             label.textContent = `Entry ${currentEntry}`;
 
@@ -172,8 +219,10 @@ const createFormExperience = () =>{
             input.setAttribute("type", "text");
             input.setAttribute("id", `job-entry-${currentExperience}-${currentEntry}`);
             input.setAttribute("name", `job-entry-${currentExperience}-${currentEntry}`);
-            unOrderedList.appendChild(label);
-            unOrderedList.appendChild(input);
+            inputEntryContainer.appendChild(deleteJobEntryBtn);
+            inputEntryContainer.appendChild(label);
+            inputEntryContainer.appendChild(input);
+            unOrderedList.appendChild(inputEntryContainer);
 
             //Append preview entry
             const previewList = document.getElementById(`preview-job-experience-${currentExperience}`);
@@ -188,6 +237,8 @@ const createFormExperience = () =>{
             })
             jobEntries++;
         });
+
+       
 
         wrapper.appendChild(button);
         wrapper.appendChild(unOrderedList); //Creates job responsibilities
@@ -245,12 +296,6 @@ const eventHandlers = (index) =>{
 
     // eventExperienceHandler(index);
 }
-
-// const eventExperienceHandler = (index) => {
-//     const readContainer = document.getElementById(`inputs-job-experience-${index}`);
-
-//     console.log(readContainer.querySelectorAll("input"));
-// }
     
 const btnExperienceHandler = (e) => {
     e.preventDefault();
@@ -271,6 +316,22 @@ buttonExperience.addEventListener("click", btnExperienceHandler);
 
 const educationButton = document.getElementById("btn-education");
 
+const deleteEducationHandler = (e, id) => {
+    e.preventDefault();
+
+    const parent = document.getElementById("education")
+    const child = document.getElementById(`input-education-${id}`)
+
+    parent.removeChild(child);
+
+    const previewParent = document.getElementById("preview-education");
+    const previewChild = document.getElementById(`preview-education-entry-${id}`);
+
+    previewParent.removeChild(previewChild);
+
+    educationCount--;
+
+}
 const addEducationHandler = (e) => {
     e.preventDefault();
 
@@ -284,7 +345,7 @@ const addEducationHandler = (e) => {
 
     //Adds a wrapper
     const wrapper = document.createElement("div");
-    wrapper.setAttribute("id", `education-${currentEducation}`)
+    wrapper.setAttribute("id", `input-education-${currentEducation}`)
     //Adds Input Entry
     
     const inputTitle = document.createElement("input");
@@ -293,8 +354,11 @@ const addEducationHandler = (e) => {
     inputTitle.setAttribute("id", `nameofInstitution-${currentEducation}`);
     const labelTitle = document.createElement("label");
     labelTitle.textContent = "Name of institution";
-    labelTitle.setAttribute("for", `nameOfInstitution-${currentEducation}`)
+    labelTitle.setAttribute("for", `nameOfInstitution-${currentEducation}`);
 
+    const deleteEducationBtn = document.createElement("button");
+    deleteEducationBtn.textContent = "delete";
+    deleteEducationBtn.addEventListener(("click"), (e) => deleteEducationHandler(e, currentEducation));
 
     const inputMajor = document.createElement("input");
     inputMajor.setAttribute("type", "text");
@@ -314,6 +378,7 @@ const addEducationHandler = (e) => {
     labelDate.textContent = "Finish Date";
     labelDate.setAttribute("for", `education-date-${currentEducation}`);
 
+    wrapper.appendChild(deleteEducationBtn);
     [labelTitle, inputTitle].forEach((item) => wrapper.appendChild(item));
     [labelMajor, inputMajor].forEach((item) => wrapper.appendChild(item));
     [labelDate, inputDate].forEach((item) => wrapper.appendChild(item));
@@ -321,13 +386,10 @@ const addEducationHandler = (e) => {
     getEducationContainer.appendChild(wrapper);
 
     //Adds Preview Education
-    const getPreviewEducation = document.getElementById("preview-job-education");
-
-    // const createPreviewWrapper = document.createElement("div");
-    // createPreviewWrapper.setAttribute("id", `preview-education-${currentEducation}`);
+    const getPreviewEducation = document.getElementById("preview-education");
 
     const educationLayout = document.createElement("div");
-    educationButton.setAttribute("id", `preview-education-${currentEducation}`);
+    educationLayout.setAttribute("id", `preview-education-entry-${currentEducation}`)
 
     educationLayout.innerHTML = `
         <div class="preview-education-title-container">
@@ -451,6 +513,21 @@ const levelSelectionHandler = (e, id) => {
     const getChild = document.getElementById(`preview-language-${id}`);
     getChild.textContent = `${language.value === "" ? "DEFAULT_LANGUAGE" : language.value} - ${e.currentTarget.value}`;
 }
+
+const deleteLanguageHandler = (e, id) => {
+    e.preventDefault();
+
+    const parent = document.getElementById("languages")
+    const child = document.getElementById(`input-language-container-${id}`);
+    parent.removeChild(child);
+
+    const previewParent = document.getElementById("language_list");
+    const previewChild = document.getElementById(`preview-language-${id}`)
+    previewParent.removeChild(previewChild);
+
+    languageEntry--;
+
+}
 const languageHandler = (e) => {
     const currentLanguageEntry = languageEntry;
 
@@ -485,6 +562,15 @@ const languageHandler = (e) => {
     createContainer.appendChild(createLabel);
     inputLanguageParent.appendChild(createContainer);
 
+    // Delete Section
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "delete";
+
+    deleteBtn.addEventListener(("click"), (e) =>  deleteLanguageHandler(e, currentLanguageEntry));
+
+    createContainer.appendChild(deleteBtn);
+
     // Preview Section
 
     const previewLanguage = document.createElement("li");
@@ -492,10 +578,6 @@ const languageHandler = (e) => {
     previewLanguage.textContent = "English - Proficient";
 
     previewLanguageParent.appendChild(previewLanguage);
-
-    // Delete function
-
-    
 
     languageEntry++;
 }
