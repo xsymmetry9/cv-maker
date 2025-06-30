@@ -361,25 +361,77 @@ const addEducationHandler = (e) => {
 educationButton.addEventListener(("click"), addEducationHandler);
 
 // Skills
-const numOfEntries = 1;
-const skillBtn = document.getElementById("btn-skill");
-skillBtn.addEventListener(("click"), (e) => {
+let numOfEntries = 1;
+
+const deleteSkillHandler = (e, child, previewChild) => {
+
     e.preventDefault();
+    
+    // Removes Input
+    const getContainerParent = document.getElementById("skills");   
+    const getChild = document.getElementById(child);
+
+    if(!getChild) return; // In case of error
+
+    getContainerParent.removeChild(getChild); // removes child of parent
+        
+    //Removes Preview
+
+    if(!document.getElementById(previewChild)) return; // In case if there is an error
+
+    const getContainerPreviewParent = document.getElementById("skill_list");
+    getContainerPreviewParent.removeChild(document.getElementById(previewChild)); // removes child of parent
+
+    numOfEntries--;
+
+}
+const skillBtn = document.getElementById("btn-skill");
+const skillHandler = (e) => {
+    e.preventDefault();
+
+    // Create Input
+    const getContainer = document.getElementById("skills");
     const currentEntry = numOfEntries;
 
+    const createContainer = document.createElement("div");
+    createContainer.setAttribute("id", `container-skill-input-${currentEntry}`)
+
     const createEntry = document.createElement("label");
-    
     const input = document.createElement("input");
     input.setAttribute("type", "text");
     input.setAttribute("id", `skill-${currentEntry}`);
+    input.setAttribute("placeholder", `e.g (HTML, CSS, JS)`);
 
-    input.addEventListener(("input"), (e) => {console.log(e.currentTarget.value)});
+    //Creates preview skills
+    const getContainerFromSkill = document.getElementById("skill_list");
+    const createNewSkill = document.createElement("li");
+    createNewSkill.setAttribute("id", `preview-skill-entry-${currentEntry}`);
+    createNewSkill.textContent= `Skill Default`;
 
+    getContainerFromSkill.appendChild(createNewSkill);
 
+    // Creates a delete button for skill
+    const deleteSkillBtn = document.createElement("button");
+    deleteSkillBtn.textContent = "Delete";
+    deleteSkillBtn.classList.add("deleteBtn");
+
+    deleteSkillBtn.addEventListener(("click"), (e) => deleteSkillHandler(e, `container-skill-input-${currentEntry}`, `preview-skill-entry-${currentEntry}`));
+
+    input.addEventListener(("input"), (e) => {
+        const getSkillPreview = document.getElementById(`preview-skill-entry-${currentEntry}`);
+        getSkillPreview.textContent = e.currentTarget.value;
+    });
     createEntry.appendChild(input);
 
+    createContainer.appendChild(createEntry);
+    createContainer.appendChild(deleteSkillBtn);
+
+    getContainer.appendChild(createContainer);
+
+
     numOfEntries++;
-});
+}
+skillBtn.addEventListener(("click"), skillHandler);
 
 // Languages
 const languageBtn = document.getElementById("btn-language");
