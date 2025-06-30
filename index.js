@@ -434,13 +434,76 @@ const skillHandler = (e) => {
 skillBtn.addEventListener(("click"), skillHandler);
 
 // Languages
-const languageBtn = document.getElementById("btn-language");
-languageBtn.addEventListener(("click"), (e) => {
+
+let languageEntry = 1;
+
+const languageInputHandler = (e, id) => {
     e.preventDefault();
-});
+    const getLanguage = document.getElementById(`preview-language-${id}`);
+    const level = document.getElementById(`select-language-entry-${id}`)
+    getLanguage.textContent = `${e.currentTarget.value} - ${!level.value ? "Choose a level" : level.value}`;
+
+}
+
+const levelSelectionHandler = (e, id) => {
+    e.preventDefault();
+    const language = document.getElementById(`input-language-entry-${id}`);
+    const getChild = document.getElementById(`preview-language-${id}`);
+    getChild.textContent = `${language.value === "" ? "DEFAULT_LANGUAGE" : language.value} - ${e.currentTarget.value}`;
+}
+const languageHandler = (e) => {
+    const currentLanguageEntry = languageEntry;
+
+    e.preventDefault();
+    const inputLanguageParent = document.getElementById("languages");
+    const previewLanguageParent= document.getElementById("language_list");
+    // Create a container
+    const createContainer = document.createElement("div");
+    createContainer.setAttribute("id", `input-language-container-${currentLanguageEntry}`);
+
+    // Input Section
+    const createLabelInputName = document.createElement("label");
+    const createInputName = document.createElement("input");
+    createInputName.setAttribute("type", "text");
+    createInputName.setAttribute("id", `input-language-entry-${currentLanguageEntry}`);
+    createLabelInputName.appendChild(createInputName);
+
+    createInputName.addEventListener(("input"), (e) => languageInputHandler(e, currentLanguageEntry));
+    // Level Input - uses option so user can choose
+    const createLabel = document.createElement("label");
+    const createSelect = document.createElement("select");
+    createSelect.setAttribute("id", `select-language-entry-${currentLanguageEntry}`);
+    createSelect.innerHTML = `
+        <option value="">Please choose an option--</option>
+        <option value="proficient">Proficient</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="beginner">Beginner</option>
+    `
+    createSelect.addEventListener(("change"), (e) => levelSelectionHandler(e, currentLanguageEntry));
+    createLabel.appendChild(createSelect);
+    createContainer.appendChild(createLabelInputName);
+    createContainer.appendChild(createLabel);
+    inputLanguageParent.appendChild(createContainer);
+
+    // Preview Section
+
+    const previewLanguage = document.createElement("li");
+    previewLanguage.setAttribute("id", `preview-language-${currentLanguageEntry}`);
+    previewLanguage.textContent = "English - Proficient";
+
+    previewLanguageParent.appendChild(previewLanguage);
+
+    // Delete function
+
+    
+
+    languageEntry++;
+}
+const languageBtn = document.getElementById("btn-language");
+languageBtn.addEventListener(("click"), languageHandler);
 
 //Save button
-const submitBtn = document.getElementById("save")
+const submitBtn = document.getElementById("save");
 const submitHandler = (e) =>{
     e.preventDefault();
     
