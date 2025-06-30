@@ -94,9 +94,9 @@ textarea{
     border: 2px solid var(--color-primary);
     box-shadow: var(--shadow-md);
     border-radius: var(--radius-md);
-    margin-top: 6px;
+    margin-top: var(--space-sm);
 }
-input:focus, input:hover, textarea{
+input:focus, input:hover, textarea:hover, textarea:focus{
     border-color: var(--color-accent);
 }
 footer{
@@ -142,8 +142,9 @@ button{
     height: auto;
     overflow-y: scroll;
 }
+/* A4 Size paper */
 .cv-paper{
-    width: 794px;
+    width: 794px; 
     height: 1123px;
     margin: 2rem auto;
     padding: 2rem;
