@@ -89,7 +89,8 @@ input[type="date"],
 input[type="email"],
 input[type="tel"],
 input[type="number"],
-textarea{
+textarea,
+select{
     font-family: var(--font-family-base);
     font-size: var(--font-size-md);
     box-sizing: border-box;
@@ -99,6 +100,7 @@ textarea{
     box-shadow: var(--shadow-md);
     border-radius: var(--radius-md);
     margin-top: var(--space-sm);
+    box-sizing: border-box;
 }
 input:focus, input:hover, textarea:hover, textarea:focus{
     border-color: var(--color-accent);
@@ -181,10 +183,11 @@ button{
     border-bottom: 2px solid black;
 }
 
-.preview-experience-title-container,
-.preview-education-title-container{
+.title-two-items
+{
     display: flex;
     justify-content: space-between;
+    height: 20px;
 }
 
 .list-container{
@@ -198,4 +201,24 @@ button{
 .preview-education-major{
     color: slate;
     font-weight: 400;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+    padding: 0;
+}
+.delete-btn:hover, .delete-btn:focus{
+    opacity: .5;
+}
+
+.wrapper-two-items{
+    display: grid;
+    grid-template-columns: 1fr 20px;
+    align-items: center;
+    gap: 8px;
+}
+.wrapper-two-items > button {
+ width: 20px;
+ height: 20px;
 }
