@@ -6,6 +6,11 @@ const addressInput = document.getElementById("address");
 const telNumberInput = document.getElementById("tel-number");
 const summaryInput = document.getElementById("summary");
 
+const buttonExperience = document.getElementById("btn-experience");
+const buttonEducation = document.getElementById("btn-education");
+const buttonSkill = document.getElementById("btn-skill");
+const buttonLanguage = document.getElementById("btn-language");
+
 const previewName = document.getElementById("preview-name");
 const previewTitle = document.getElementById("preview-title");
 const previewEmail = document.getElementById("preview-email");
@@ -26,6 +31,8 @@ const formattedDate = (date) => {
 
 const formatDateForInput = (str) =>{
     // Converts to YYY-MM-DD
+
+    if(str === "" || str === null || str === undefined) return "";
 
     const date = new Date(str);
 
@@ -110,59 +117,68 @@ const cvData = {
     ]
 }
 
-//Keeps count
-let experienceCount = 1;
-let educationCount = 1;
+const createInput = ({id, name, value, placeholder, type}) => {
+    const input = document.createElement("input");
+    input.type = type;
+    input.id = id;
+    input.name = name;
+    input.value = value;
+    input.placeholder = placeholder || "";
+
+    if(name === "finish" || name === "start")
+    {
+        input.step = 1;
+    }
+
+    return input;
+};
+
+const createLabelInput = (obj) =>{
+    const label = document.createElement("label");
+    label.textContent = obj.title || "";
+    const input = createInput(obj);
+    label.appendChild(input);
+    return {label, input};
+}
 
 // User is able to see what they are typing
-const nameHandler = (e) => {
+const inputHandler = (e) => {
     const {name, value} = e.currentTarget;
     const previewInput = document.getElementById(`preview-${name}`);
     previewInput.textContent= value === "" ? cvData[name] : value;
-}
 
-nameInput.addEventListener("input", nameHandler);
-emailInput.addEventListener("input", nameHandler);
-summaryInput.addEventListener("input", nameHandler);
-addressInput.addEventListener("input", nameHandler);
-telNumberInput.addEventListener("input", nameHandler);
-titleInput.addEventListener("input", nameHandler);
+    cvData[name] = e.currentTarget.value;
 
-
-// Experience Section  
-const buttonExperience = document.querySelector("#btn-experience");
-
-//Creates all inputs for experience
-//It takes what we are inputing
-const createInput = (obj) => {
-    const {titleName, idName, type} = obj
-    const container = document.createElement("label");
-    container.textContent = titleName;
-    const input = document.createElement("input");
-    input.id = `${idName}`;
-    input.name = `${idName}`;
-    input.type = `${type}`;
-    container.appendChild(input);
-
-    return container;
+    return cvData[name];
 }
 
 const deleteHandler = (e, obj) => {
-    const {parentId, childId, toBeDeletedChildId, toBeDeletedParentId, counterName} = obj;
     e.preventDefault();
-    const parent = document.getElementById(parentId);
-    const child = document.getElementById(childId);
-    parent.removeChild(child);
+    const {id, ref, parentInputRef, childInputRef, parentRef, childRef} = obj;
+    if(ref === "experience" || ref === "education" || ref === "skills" || ref === "languages")
+        {
+            const prevLength = cvData[ref].length;
+            cvData[ref] = cvData[ref].filter((entry) => entry.id != id);
+            if(prevLength === cvData[ref].length){
+                console.log("Error:", "It didn't remove entry");
+                console.log(cvData[ref].length);
+            }
 
-    const reviewParent = document.getElementById(toBeDeletedParentId);
-    const reviewChild = document.getElementById(toBeDeletedChildId);
-    reviewParent.removeChild(reviewChild);
+            const parent = document.getElementById(parentInputRef);
+            const child = document.getElementById(childInputRef);
+            parent.removeChild(child);
 
-    if(counterName === "experience"){
-        experienceCount--;
+            const reviewParent = document.getElementById(parentRef);
+            const reviewChild = document.getElementById(childRef);
+            reviewParent.removeChild(reviewChild);
+        
+            return cvData[ref];
+        }
+    else {
+        console.log("Error");
+        return;
     }
 }
-
 
 // Creates a new Row for Job experience
 const addExperienceHandler = (e) =>{
@@ -177,183 +193,8 @@ const addExperienceHandler = (e) =>{
             finish: "",
             jobs: [],
         };
-
-        const {id} = currentExperience;
-
         cvData.experience.push(currentExperience);
         plotExperience(currentExperience);
-
-        //Creates a new field for user to type for their experience
-        const getContainer = document.getElementById("experience");
-
-        const wrapper = document.createElement("div");
-        wrapper.setAttribute("id", `experience-${id}`);
-
-        //Creates a title for the job section
-        const title = document.createElement("h3");
-        title.textContent = `Experience`;
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = "delete";
-        // deleteBtn.addEventListener(("click"), (e) => deleteHandler(e, 
-        //     {
-        //         parentId: "experience", 
-        //         childId: `experience-${id}`, 
-        //         toBeDeletedParentId: `preview-job-experience`,
-        //         toBeDeletedChildId: `wrapper-${id}`, 
-        //         counterName: "experience"
-        //     }));
-        
-        //Allows user to input company name, title job, start, and finish
-
-        const inputName = createInput({"titleName": "Name of company", "idName": `company-${id}`, "type": "text"});
-        const inputTitle = createInput({"titleName": "Name of title", "idName": `title-${id}`, "type": "text"});
-        const inputStart = createInput({"titleName": "From", "idName":`start-${id}`, "type": "date"});
-        const inputFinish = createInput({"titleName": "To", "idName": `finish-${id}`, "type": "date"});
-
-        [title, deleteBtn, inputName, inputTitle, inputStart, inputFinish].forEach((item) => wrapper.appendChild(item)); //Appends all the necessary input
-
-        //Adds a button to create a list of responsibilities
-        const button = document.createElement("button");
-        button.textContent = "Add job description";
-        const unOrderedList = document.createElement("ul"); // Creates a section where user is allow to input their responsibility
-        unOrderedList.id =`inputs-job-experience-${id}`;
-
-        //Set a counter for job entries
-        // let jobEntries = 1
-
-        // const deleteJobEntryHandler = (e, id) => {
-        //     e.preventDefault();
-
-        //     const inputParentEntry = document.getElementById(`inputs-job-experience-${currentExperience}`);
-        //     const inputChildEntry = document.getElementById(`job-entry-container-${currentExperience}-${id}`);
-
-        //     inputParentEntry.removeChild(inputChildEntry);
-
-        //     const previewParentEntry = document.getElementById(`preview-job-experience-${currentExperience}`);
-        //     const previewChildEntry = document.getElementById(`preview-job-${currentExperience}-entry-${id}`);
-        //     previewParentEntry.removeChild(previewChildEntry);
-
-        //     jobEntries--;
-        // }
-
-        // button.addEventListener(("click"), (e) => {
-        //     e.preventDefault();
-        //     if(jobEntries > 3) return;
-
-        //     const currentEntry = jobEntries;
-
-        //     const deleteJobEntryBtn = document.createElement("button");
-        //     deleteJobEntryBtn.textContent = "delete";
-
-        //     deleteJobEntryBtn.addEventListener(("click"), (e) => deleteJobEntryHandler(e, currentEntry));
-        //     //Append an input entry
-
-        //     const inputEntryContainer = document.createElement("div");
-        //     inputEntryContainer.setAttribute("id", `job-entry-container-${currentExperience}-${currentEntry}`);
-        //     const label = document.createElement("label");
-        //     label.textContent = `Entry ${currentEntry}`;
-
-        //     const input = document.createElement("input");
-        //     input.setAttribute("type", "text");
-        //     input.setAttribute("id", `job-entry-${currentExperience}-${currentEntry}`);
-        //     input.setAttribute("name", `job-entry-${currentExperience}-${currentEntry}`);
-        //     inputEntryContainer.appendChild(deleteJobEntryBtn);
-        //     inputEntryContainer.appendChild(label);
-        //     inputEntryContainer.appendChild(input);
-        //     unOrderedList.appendChild(inputEntryContainer);
-
-        //     //Append preview entry
-        //     const previewList = document.getElementById(`preview-job-experience-${currentExperience}`);
-        //     const previewItem = document.createElement("li");
-        //     previewItem.textContent = `This is entry # ${currentEntry}`;
-        //     previewItem.setAttribute("id",`preview-job-${currentExperience}-entry-${currentEntry}`);
-        //     previewList.appendChild(previewItem);
-
-        //     input.addEventListener(("input"), (e) => {
-        //         const target = document.getElementById(`preview-job-${currentExperience}-entry-${currentEntry}`);
-        //         target.textContent = e.currentTarget.value;
-        //     })
-        //     jobEntries++;
-        // });
-
-        // wrapper.appendChild(button);
-        // wrapper.appendChild(unOrderedList); //Creates job responsibilities
-
-        getContainer.appendChild(wrapper);
-}
-
-//Creates a new row for Preview Job Experience
-const createPreview = (index) => {
-    const getContainer = document.getElementById("preview-job-experience");
-
-    const wrapper = document.createElement("div");
-    wrapper.setAttribute("id", `wrapper-${index}`);
-
-    wrapper.innerHTML = `
-    <div class="preview-experience-title-container">
-        <p><strong id="preview-company-${index}">[Name of Company]</strong> - <strong id="preview-title-${index}">[Name of Title]</strong></p>
-        <p><span id="preview-start-${index}">${formattedDate(new Date())}</span> - <span id="preview-finish-${index}">${formattedDate(new Date())}</span></p>
-    </div>
-    <ul class="list-container" id="preview-job-experience-${index}"></ul>
-    
-    `;
-
-    getContainer.appendChild(wrapper);
-
-}
-const eventHandlers = (index) =>{
-    const readInputCompany = document.getElementById(`company-${index}`);
-    const readInputTitle = document.getElementById(`title-${index}`);
-    const readInputStart = document.getElementById(`start-${index}`);
-    const readInputFinish = document.getElementById(`finish-${index}`);
-
-    readInputCompany.addEventListener("input", (e) => {
-        const getPreviewCompany = document.getElementById(`preview-company-${index}`);
-        getPreviewCompany.textContent = e.currentTarget.value;
-    })
-
-    readInputTitle.addEventListener("input", (e) => {
-        const getPreviewTitle = document.getElementById(`preview-title-${index}`);
-        getPreviewTitle.textContent = e.currentTarget.value;
-    });
-
-    readInputStart.addEventListener("input", (e) => {
-        const getDate = e.currentTarget.valueAsDate;
-        const getPreviewStart = document.getElementById(`preview-start-${index}`);
-        getPreviewStart.textContent = formattedDate(getDate);
-    });
-
-    readInputFinish.addEventListener("input", (e) => {
-        const getDate = e.currentTarget.valueAsDate;
-        const getPreviewFinish = document.getElementById(`preview-finish-${index}`);
-        getPreviewFinish.textContent = formattedDate(getDate);
-        console.log(formattedDate(getDate));
-    });
-
-    // eventExperienceHandler(index);
-}
-    
-buttonExperience.addEventListener("click", addExperienceHandler);
-
-const educationButton = document.getElementById("btn-education");
-
-const deleteEducationHandler = (e, id) => {
-    e.preventDefault();
-
-    const parent = document.getElementById("education")
-    const child = document.getElementById(`input-education-${id}`)
-
-    parent.removeChild(child);
-
-    const previewParent = document.getElementById("preview-education");
-    const previewChild = document.getElementById(`preview-education-entry-${id}`);
-
-    previewParent.removeChild(previewChild);
-
-    cvData.education = cvData.education.filter((item) => item.id != id);
-    console.log(cvData.education);
-
 }
 const addEducationHandler = (e) => {
     e.preventDefault();
@@ -373,40 +214,15 @@ const addEducationHandler = (e) => {
     plotEducation(currentEducation);  
 }
 
-educationButton.addEventListener(("click"), addEducationHandler);
 
 // Skills
 
-const deleteSkillHandler = (e, child, previewChild) => {
-
-    e.preventDefault();
-    
-    // Removes Input
-    const getContainerParent = document.getElementById("skills");   
-    const getChild = document.getElementById(child);
-
-    if(!getChild) return; // In case of error
-
-    getContainerParent.removeChild(getChild); // removes child of parent
-        
-    //Removes Preview
-
-    if(!document.getElementById(previewChild)) return; // In case if there is an error
-
-    const getContainerPreviewParent = document.getElementById("skill_list");
-    getContainerPreviewParent.removeChild(document.getElementById(previewChild)); // removes child of parent
-
-    numOfEntries--;
-
-}
-const skillBtn = document.getElementById("btn-skill");
 const skillHandler = (e) => {
     e.preventDefault();
     const currentEntry = { id: generateRandomId(), skillName: ""};
     cvData.skills.push(currentEntry);
     plotSkill(currentEntry);
 }
-skillBtn.addEventListener(("click"), skillHandler);
 
 // Languages
 const languageInputHandler = (e, id) => {
@@ -438,31 +254,12 @@ const levelSelectionHandler = (e, id) => {
     }
 }
 
-const deleteLanguageHandler = (e, id) => {
-    e.preventDefault();
-
-    const parent = document.getElementById("languages")
-    const child = document.getElementById(`input-language-container-${id}`);
-    parent.removeChild(child);
-
-    const previewParent = document.getElementById("language_list");
-    const previewChild = document.getElementById(`language-${id}`);
-
-    cvData.languages = cvData.languages.filter((item) => (item.id!= id));
-
-    previewParent.removeChild(previewChild);
-
-}
 const languageHandler = (e) => {
     e.preventDefault();
     const currentLanguageEntry = {id: generateRandomId(), "name": "", "level": ""}; //Gives me the last index of the array
     cvData.languages.push(currentLanguageEntry);
     plotLanguage(currentLanguageEntry);
 }
-
-const languageBtn = document.getElementById("btn-language");
-languageBtn.addEventListener(("click"), languageHandler);
-
 //Save button
 const submitBtn = document.getElementById("save");
 const submitHandler = (e) =>{
@@ -481,7 +278,7 @@ const submitHandler = (e) =>{
     })
 
 }
-const plotExperience = (obj, index) => {
+const plotExperience = (obj) => {
     const {id, company, company_title, start, finish, jobs} = obj;
     const target = cvData.experience.findIndex((item) => item.id === id); // Finds index of experience
     if(target === -1) return; // error
@@ -489,46 +286,80 @@ const plotExperience = (obj, index) => {
     // Input Section
     const inputContainer = document.getElementById("experience");
 
-    const labelCompany = document.createElement("label");
-    const inputCompany = document.createElement("input");
-    inputCompany.id = `company-${id}`;
-    inputCompany.name = "company";
-    inputCompany.value = company;
-    inputCompany.type = "text";
-    labelCompany.appendChild(inputCompany);
+    const  experienceWrapper = document.createElement("div");
+    experienceWrapper.id = `experience-entry-${id}`;
 
-    inputCompany.addEventListener(("input"), (e) => {
+    const wrapperTitleBtn = document.createElement("div");
+    wrapperTitleBtn.className="wrapper-two-items";
+
+    const title = document.createElement("h3");
+    title.textContent = `Job Entry - ${target + 1}` // The index of the array
+
+    const inputCompany = createLabelInput({
+        id: `input-company-${id}`,
+        name: "company",
+        value: company,
+        type: "text",
+        placeholder: "Company name"
+    });
+
+    inputCompany.input.addEventListener(("input"), (e) => {
         const container = document.getElementById(`preview-${e.currentTarget.name}-${id}`);
         container.textContent = e.currentTarget.value;
         cvData.experience[target][e.currentTarget.name] = e.currentTarget.value;
     });
 
-    const labelCompanyTitle = document.createElement("label");
-    const inputCompanyTitle = document.createElement("input");
-    inputCompanyTitle.id = `company-title-${id}`;
-    inputCompanyTitle.name = "company_title";
-    inputCompanyTitle.value = company_title;
-    inputCompanyTitle.type = "text";
-    labelCompanyTitle.appendChild(inputCompanyTitle);
+    const inputCompanyTitle = createLabelInput({
+        id: `input-company_title-${id}`,
+        name: "company_title",
+        value: company_title,
+        type: "text",
+        placeholder: "Job title"
+    });
 
-    const labelStart = document.createElement("label");
-    const inputStart = document.createElement("input");
-    inputStart.id = `start-${id}`;
-    inputStart.name = "start";
-    inputStart.value = formatDateForInput(start);
-    inputStart.type = "date";
-    labelStart.appendChild(inputStart);
+    inputCompanyTitle.input.addEventListener(("input"), (e) => {
+        const container = document.getElementById(`preview-${e.currentTarget.name}-${id}`);
+        container.textContent = e.currentTarget.value;
+        cvData.experience[target][e.currentTarget.name] = e.currentTarget.value;
+    });
 
-     const labelFinish = document.createElement("label");
-    const inputFinish = document.createElement("input");
-    inputFinish.id = `finish-${id}`;
-    inputFinish.name = "finish";
-    inputFinish.value = finish === "present" ? formatDateForInput(new Date()) : formatDateForInput(finish);
-    inputFinish.type = "date";
-    labelFinish.appendChild(inputFinish);
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "x"
+    deleteButton.className = "delete-btn"
+    deleteButton.addEventListener(("click"), (e) => deleteHandler(e, {
+        id: id,
+        ref: "experience",
+        parentInputRef: "experience",
+        childInputRef: `experience-entry-${id}`,
+        parentRef: `preview-job-experience`,
+        childRef: `preview-experience-wrapper-${id}`
+    }));
 
-    [labelCompany, labelCompanyTitle, labelStart, labelFinish].forEach((item) => inputContainer.appendChild(item));
-    
+    const inputStart = createLabelInput({
+        type: "text",
+        id: `start-${id}`,
+        name: "start",
+        value: formatDateForInput(start),
+        placeholder: "Start Date",
+    });
+    inputStart.input.addEventListener("focus", () => inputStart.input.type = "date");
+    inputStart.input.addEventListener("blur", () => inputStart.input.type = "text");
+
+    const inputFinish = createLabelInput({
+        type: "text",
+        id: `finish-${id}`,
+        name: "start",
+        value: finish === "present" ? formatDateForInput(new Date()) : formatDateForInput(finish),
+        placeholder: "Finish Date",
+    })
+
+    inputFinish.input.addEventListener("focus", () => inputFinish.input.type = "date");
+    inputFinish.input.addEventListener("blur", () => inputFinish.input.type = "text");
+
+    [title, deleteButton].forEach((item) => wrapperTitleBtn.appendChild(item));
+
+    [wrapperTitleBtn, inputCompany.label, inputCompanyTitle.label, inputStart.label, inputFinish.label].forEach((item) => experienceWrapper.appendChild(item));
+
      //Adds a button to create a list of responsibilities
     const addJobHandler = document.createElement("button");
     addJobHandler.textContent = "Add job description";
@@ -545,14 +376,38 @@ const plotExperience = (obj, index) => {
 
     const createJobEntry = (id, jobEntry) => {
         //Input
-        const labelForListOfJob = document.createElement("label");
-        const inputForListOfJob = document.createElement("input");
-        inputForListOfJob.type = "text";
-        inputForListOfJob.value = jobEntry.entry;
-        inputForListOfJob.id = `experience-${id}-entry-${jobEntry.id}`;
-        labelForListOfJob.appendChild(inputForListOfJob);
+        const entryExperienceWrapper = document.createElement("li");
+        entryExperienceWrapper.id = `input-experience-${id}-entry-${jobEntry.id}`;
+        entryExperienceWrapper.className="wrapper-two-items";
+        const deleteEntryBtn = document.createElement("button");
+        deleteEntryBtn.className = "delete-btn";
+        deleteEntryBtn.textContent = "x";
+        deleteEntryBtn.addEventListener(("click"), (e) => {
+            e.preventDefault();
+            const inputJobContainer = document.getElementById(`inputs-job-experience-${id}`);
+            const inputJobChild = document.getElementById(`input-experience-${id}-entry-${jobEntry.id}`);
+            inputJobContainer.removeChild(inputJobChild);
 
-        inputForListOfJob.addEventListener(("input"), (e) => {
+            const previewJobContainer = document.getElementById(`preview-job-experience-${id}`)
+            const previewJobChild = document.getElementById(`preview-experience-${id}-entry-${jobEntry.id}`);
+            previewJobContainer.removeChild(previewJobChild);
+
+            cvData.experience[target].jobs = cvData.experience[target].jobs.filter((item) => item.id != jobEntry.id);
+
+            console.log(cvData.experience[target].jobs);
+        })
+
+        const entryJobDescription = createLabelInput({
+            type: "text",
+            id: `experience-${id}-entry-${jobEntry.id}`,
+            name: "entry",
+            value: jobEntry.entry,
+            placeholder: "Enter a job description"
+        });
+
+        [entryJobDescription.label, deleteEntryBtn].forEach((item) => entryExperienceWrapper.appendChild(item));
+
+        entryJobDescription.input.addEventListener(("input"), (e) => {
             const getEntryFromPreview = document.getElementById(`preview-experience-${id}-entry-${jobEntry.id}`);
             getEntryFromPreview.textContent = e.currentTarget.value;
             const targetJobEntry = cvData.experience[target].jobs.findIndex((item) => item.id === jobEntry.id);
@@ -560,7 +415,7 @@ const plotExperience = (obj, index) => {
 
             console.log(cvData.experience[target].jobs);
         })
-        unOrderedList.appendChild(labelForListOfJob);
+        unOrderedList.appendChild(entryExperienceWrapper);
         //Preview
         const createList = document.createElement("li");
         createList.id = `preview-experience-${id}-entry-${jobEntry.id}`;
@@ -569,16 +424,16 @@ const plotExperience = (obj, index) => {
     }
 
     // Preview Section
-    const container = document.getElementById("preview-job-experience");
+    const previewExperienceContainer = document.getElementById("preview-job-experience");
 
-    const wrapper = document.createElement(`wrapper`)
-    wrapper.id = `wrapper-${id}`;
+    const previewExperienceWrapper = document.createElement(`div`)
+    previewExperienceWrapper.id = `preview-experience-wrapper-${id}`;
 
-    const experienceContainer = document.createElement("div");
-    experienceContainer.className = "preview-experience-title-container"
-    experienceContainer.innerHTML = `
-        <p><strong id="preview-company-${id}">${company}</strong>-<strong id="preview-title-${index}">${company_title}</strong></p>
-        <p><span id="preview-start-${id}">${start}</span>-<span id="preview-finish-${index}">${finish === "present" ? "Present" : finish}</span></p>`;
+    const titleDateGroup = document.createElement("div");
+    titleDateGroup.className = "title-two-items";
+    titleDateGroup.innerHTML = `
+        <p><strong id="preview-company-${id}">${company}</strong>-<strong id="preview-company_title-${id}">${company_title}</strong></p>
+        <p><span id="preview-start-${id}">${start}</span>-<span id="preview-finish-${id}">${finish === "present" ? "Present" : finish}</span></p>`;
 
     const listOfJobs = document.createElement("ul");
     listOfJobs.className = "list-container";
@@ -586,9 +441,10 @@ const plotExperience = (obj, index) => {
 
     jobs.forEach((jobEntry) => createJobEntry(id, jobEntry));
 
-    [addJobHandler, unOrderedList].forEach((item) => inputContainer.appendChild(item));
-    [experienceContainer, listOfJobs].forEach((item) => wrapper.appendChild(item));;
-    container.appendChild(wrapper);
+    [addJobHandler, unOrderedList].forEach((item) => experienceWrapper.appendChild(item));
+    [titleDateGroup, listOfJobs].forEach((item) => previewExperienceWrapper.appendChild(item));
+    inputContainer.appendChild(experienceWrapper);
+    previewExperienceContainer.appendChild(previewExperienceWrapper);
 }
 const plotEducation = (item) =>{
     const {id, school, degree, start, finish} = item;
@@ -598,56 +454,57 @@ const plotEducation = (item) =>{
     const wrapper = document.createElement("div");
     wrapper.setAttribute("id", `input-education-${id}`)
 
-    const createInstitute = document.createElement("label");
-    createInstitute.textContent = "Name of Institution"
-    const createInputInstitute = document.createElement("input");
-    createInputInstitute.type = "text"
-    createInputInstitute.value = school;
-    createInputInstitute.placeholder = "Name of Institution";
-    createInputInstitute.id = `nameOfInstitute-${id}`;
-    createInstitute.appendChild(createInputInstitute);
+    const createInputInstitute = createLabelInput({
+        title: "Name of Institution",
+        type: "text",
+        id: `nameOfInstitute-${id}`,
+        name: "school",
+        value: school,
+        placeholder: "Name of the institution"
+    });
 
     const deleteEducationBtn = document.createElement("button");
     deleteEducationBtn.textContent = "delete";
-    deleteEducationBtn.addEventListener(("click"), (e) => deleteEducationHandler(e, id));
 
-    const createMajor = document.createElement("label");    
-    createMajor.textContent = "Major:";
+    deleteEducationBtn.addEventListener(("click"), (e) => deleteHandler(e, {
+        id: id,
+        ref: "education",
+        parentInputRef: "education",
+        childInputRef: `input-education-${id}`,
+        parentRef: "preview-education",
+        childRef: `preview-education-entry-${id}`
+    }));
+    const createInputMajor = createLabelInput({
+        title: "Major",
+        type: "text",
+        id: `major-${id}`,
+        name: "degree",
+        value: degree,
+        placeholder: "Major"
+    });
 
-    const createInputMajor = document.createElement("input");
-    createInputMajor.name= `major-${id}`;
-    createInputMajor.id =`major-${id}`;
-    createInputMajor.type ="text";
-    createInputMajor.placeholder = "Major";
-    createInputMajor.value = degree;
-    createMajor.appendChild(createInputMajor)
+    const createInputStartDate = createLabelInput({
+        title: "Start",
+        type: "number",
+        id: `education-start-${id}`,
+        name: "start",
+        value: start,
+        placeholder: "Start Year"
+    });
+    const createInputFinishDate = createLabelInput({
+        title: "Finish",
+        type: "number",
+        id: `education-finish-${id}`,
+        name: "finish",
+        value: finish,
+        placeholder: "Finish Year"
+    });
 
-    const createStartDate = document.createElement("label");
-    const createInputStartDate = document.createElement("input");
-    createStartDate.textContent = "Start Date";
-    createInputStartDate.id =`education-start-${id}`;
-    createInputStartDate.name =`education-start-${id}`;
-    createInputStartDate.type ="number";
-    createInputStartDate.step = 1;
-    createInputStartDate.placeholder = "Start Year";
-    createInputStartDate.value = start;
-    createStartDate.appendChild(createInputStartDate);
-
-    const createFinishDate = document.createElement("label");
-    const createInputFinishDate = document.createElement("input");
-    createFinishDate.textContent = "Finish Date";
-    createInputFinishDate.id =`education-finish-${id}`;
-    createInputFinishDate.name =`education-finish-${id}`;
-    createInputFinishDate.type ="number";
-    createInputFinishDate.step = 1;
-    createInputFinishDate.placeholder = "Finished Year"
-    createInputFinishDate.value = finish;
-    createFinishDate.appendChild(createInputFinishDate);
-
-    [createInstitute, createMajor, createStartDate, createFinishDate, deleteEducationBtn].forEach((item) => wrapper.appendChild(item));
+    [createInputInstitute.label, createInputMajor.label, createInputStartDate.label, createInputFinishDate.label, deleteEducationBtn].forEach((item) => wrapper.appendChild(item));
     inputEducationParent.append(wrapper);
 
-    const inputHandler = (e, name) => {
+    const inputHandler = (e) => {
+        const {value, name} = e.currentTarget;
         //Update education
         const container = document.getElementById(`preview-education-${name}-${id}`);
         container.textContent = e.currentTarget.value;
@@ -655,15 +512,14 @@ const plotEducation = (item) =>{
         const index = cvData.education.findIndex((item) => item.id === id);
         // If found ... 
         if(index !== -1)
-            cvData.education[index][name] = e.currentTarget.value;
+            {cvData.education[index][name] = value;}
 
         console.log(cvData.education[index]);
     }
-    createInputInstitute.addEventListener(("input"), (e) => inputHandler(e, "nameOfInstitution"));
-    createInputMajor.addEventListener(("input"), (e) => inputHandler(e, "major"));
-    createInputStartDate.addEventListener(("input"), (e) => inputHandler(e, "start"));
-    createInputFinishDate.addEventListener(("input"), (e) => inputHandler(e, "finish"));
-
+    createInputInstitute.input.addEventListener(("input"), inputHandler);
+    createInputMajor.input.addEventListener(("input"), inputHandler);
+    createInputStartDate.input.addEventListener(("input"), inputHandler);
+    createInputFinishDate.input.addEventListener(("input"), inputHandler);
 
     // Preview
     const container = document.getElementById("preview-education");
@@ -671,11 +527,11 @@ const plotEducation = (item) =>{
     const create = document.createElement("div");
     create.id = `preview-education-entry-${id}`;
     create.innerHTML = `
-        <div class = "preview-education-title-container">
-            <p class="preview-education-title" id="preview-education-major-${id}">${degree}</p>
+        <div class = "title-two-items">
+            <p class="preview-education-title" id="preview-education-degree-${id}">${degree}</p>
             <p><span id="preview-education-start-${id}">${start}</span> - <span id="preview-education-finish-${id}">${finish}</span></p>
         </div>
-        <p class="preview-education-major" id="preview-education-nameOfInstitution-${id}">${school}</p>`
+        <p class="preview-education-major" id="preview-education-school-${id}">${school}</p>`
     container.appendChild(create);
 
 }
@@ -686,33 +542,39 @@ const plotSkill = (item) => {
     // Input
         const getContainer = document.getElementById("skills");
 
-        const createContainer = document.createElement("div");
-        createContainer.id = `container-skill-input-${id}`;
+        const wrapper = document.createElement("div");
+        wrapper.id = `container-skill-input-${id}`;
+        wrapper.className="wrapper-two-items";
 
-        const createLabelName = document.createElement("label");
-        const input = document.createElement("input");
-        input.type ="text";
-        input.id =`skill-${id}`;
-        input.placeholder =`e.g (HTML, CSS, JS)`;
-        input.name = "skillName";
-        input.value = skillName;
-        
+        const createInputSkillEntry = createLabelInput({
+            type:"text",
+            id:`skill-${id}`,
+            placeholder:`e.g (HTML, CSS, JS)`,
+            name: "skillName",
+            value: skillName
+        });
 
     // Creates a delete button for skill
     const deleteSkillBtn = document.createElement("button");
-    deleteSkillBtn.textContent = "Delete";
-    deleteSkillBtn.classList.add("deleteBtn");
+    deleteSkillBtn.textContent = "x";
+    deleteSkillBtn.className ="delete-btn";
 
-    deleteSkillBtn.addEventListener(("click"), (e) => deleteSkillHandler(e, `container-skill-input-${currentEntry}`, `preview-skill-entry-${currentEntry}`));
+    deleteSkillBtn.addEventListener(("click"), (e) => deleteHandler(e,
+        {
+            id: id,
+            ref: "skills",
+            parentInputRef: "skills",
+            childInputRef: `container-skill-input-${id}`,
+            parentRef: "skill_list",
+            childRef: `preview-skill-${id}`
+        }));
 
-    input.addEventListener(("input"), (e) => {
+    createInputSkillEntry.input.addEventListener(("input"), (e) => {
         const getSkillPreview = document.getElementById(`preview-skill-${id}`);
-        console.log(getSkillPreview);
         getSkillPreview.textContent = e.currentTarget.value;
     });
-    createLabelName.appendChild(input);
-    getContainer.appendChild(createLabelName);
-    getContainer.appendChild(deleteSkillBtn);
+    [createInputSkillEntry.label, deleteSkillBtn].forEach((item) => wrapper.appendChild(item));
+    getContainer.appendChild(wrapper);
 
     // Preview
         const container = document.getElementById("skill_list");
@@ -731,15 +593,21 @@ const plotLanguage = (item) =>{
     const createContainer = document.createElement("div");
     createContainer.id = `input-language-container-${id}`;
 
-    const createLabelInputName = document.createElement("label");
-    const createInputName = document.createElement("input");
-    createInputName.type = "text";
-    createInputName.id = `input-language-entry-${id}`;
-    createInputName.value = name;
-    createInputName.placeholder = "Input a language";
-    createInputName.name = "name";
-    createLabelInputName.appendChild(createInputName);
-    createInputName.addEventListener(("input"), (e) => languageInputHandler(e, id));
+    const wrapperTitleBtn = document.createElement("div");
+    wrapperTitleBtn.className = "wrapper-two-items";
+
+    const title = document.createElement("h4");
+    title.textContent = "Entry";
+    
+    const createInputLanguageEntry = createLabelInput({
+        type: "text",
+        id: `input-language-entry-${id}`,
+        value: name,
+        placeholder: "Input a language",
+        name: "name"
+    })
+    createInputLanguageEntry.input.addEventListener(("input"), (e) => languageInputHandler(e, id));
+    
     // Level Input - uses option so user can choose
     const createLabel = document.createElement("label");
     const createSelect = document.createElement("select");
@@ -752,21 +620,24 @@ const plotLanguage = (item) =>{
         <option value="intermediate" ${level == "intermediate" && "selected"}>Intermediate</option>
         <option value="beginner" ${level == "beginner" && "selected"}>Beginner</option>
     `
-    createSelect.addEventListener(("change"), (e) => levelSelectionHandler(e, id));
-    createLabel.appendChild(createSelect);
-    createContainer.appendChild(createLabelInputName);
-    createContainer.appendChild(createLabel);
-    inputLanguageParent.appendChild(createContainer);
-
     // Delete Section
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "delete";
-
-    deleteBtn.addEventListener(("click"), (e) =>  deleteLanguageHandler(e, id));
-
-    createContainer.appendChild(deleteBtn);
-
+    deleteBtn.textContent = "x";
+    deleteBtn.className = "delete-btn";
+    deleteBtn.addEventListener(("click"), (e) =>  deleteHandler(e, {
+        id: id,
+        ref: "languages",
+        parentInputRef: "languages",
+        childInputRef: `input-language-container-${id}`,
+        parentRef: "language_list",
+        childRef: `language-${id}`
+    }));
+    createSelect.addEventListener(("change"), (e) => levelSelectionHandler(e, id));
+    createLabel.appendChild(createSelect);
+    [title, deleteBtn].forEach((item) => wrapperTitleBtn.appendChild(item));
+    [wrapperTitleBtn, createInputLanguageEntry.label, createLabel].forEach((item) => createContainer.append(item));
+    inputLanguageParent.appendChild(createContainer);
 
     // Preview
     const create = document.createElement("li");
@@ -805,13 +676,24 @@ const populate = () => {
     previewTelNumber.textContent = tel_number;
     previewSummary.textContent = summary;
 
-    experience.forEach((item, index ) => plotExperience(item, index));
-    education.forEach((item, index) => plotEducation(item, index));
-    skills.forEach((item, index) => plotSkill(item, index));
+    experience.forEach((item ) => plotExperience(item));
+    education.forEach((item) => plotEducation(item));
+    skills.forEach((item) => plotSkill(item));
     languages.forEach((item) => plotLanguage(item));
 
 }
 
 populate();
+nameInput.addEventListener(("input"), inputHandler);
+emailInput.addEventListener(("input"), inputHandler);
+summaryInput.addEventListener(("input"), inputHandler);
+addressInput.addEventListener(("input"), inputHandler);
+telNumberInput.addEventListener(("input"), inputHandler);
+titleInput.addEventListener(("input"), inputHandler);
+
+buttonExperience.addEventListener(("click"), addExperienceHandler);
+buttonEducation.addEventListener(("click"), addEducationHandler);
+buttonSkill.addEventListener(("click"), skillHandler);
+buttonLanguage.addEventListener(("click"), languageHandler);
 
 submitBtn.addEventListener(("click"), submitHandler);
