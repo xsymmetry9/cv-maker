@@ -35,7 +35,7 @@ Using vanilla CSS can get really messy when project gets bigger and that is why 
 /* Borders */
     --radius-sm: 4px;
     --radius-md: 8px;
-    --raidus-lg: 16px;
+    --radius-lg: 16px;
 /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -72,7 +72,7 @@ p, label{
 
 .side-nav{
     box-sizing: border-box;
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-sm) 0;
     box-shadow: var(--shadow-lg);
     overflow-y: scroll; 
     height: 100%;
@@ -91,6 +91,7 @@ input[type="tel"],
 input[type="number"],
 textarea,
 select{
+    background-color: #fff;
     font-family: var(--font-family-base);
     font-size: var(--font-size-md);
     box-sizing: border-box;
@@ -99,12 +100,17 @@ select{
     border: 2px solid var(--color-primary);
     box-shadow: var(--shadow-md);
     border-radius: var(--radius-md);
-    margin-top: var(--space-sm);
     box-sizing: border-box;
+}
+option{
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+    background-color: #fff;
 }
 input:focus, input:hover, textarea:hover, textarea:focus{
     border-color: var(--color-accent);
 }
+
 footer{
     width: 100%;
     align-self: stretch;
@@ -124,6 +130,44 @@ footer{
     padding-top: 8px;
 }
 
+/* ---------------------------------Containers ------------------------------------------------ */
+.preview-container
+{
+    height: auto;
+    overflow-y: scroll;
+}
+
+.wrap-input{
+    padding-bottom: 8px;
+}
+
+.wrap-section{
+    padding-bottom: 12px;
+    padding: 0 var(--space-sm) var(--space-sm) var(--space-md);
+    border-bottom: 2px solid gray;
+}
+.title-two-items
+{
+    display: flex;
+    justify-content: space-between;
+    height: 20px;
+}
+
+.list-container{
+    margin-left: 1.76rem;
+}
+.wrapper-two-items{
+    display: grid;
+    grid-template-columns: 1fr 20px;
+    align-items: center;
+    gap: var(--space-sm);
+    padding-bottom: var(--space-md);
+}
+.wrapper-two-items > button {
+ width: 20px;
+ height: 20px;
+}
+
 /* -----------------------------------Buttons ------------------------------------------------------- */
 
 button{
@@ -134,26 +178,59 @@ button{
     box-shadow: var(--shadow-md);
     border-radius: var(--radius-sm);
 }
-
 .primary-button{
-    border-color: blue;
+    background-color: blue;
+    color: var(--color-secondary);
 }
-.secondary-primary{
-    border-color: green;
+.primary-button:hover, .primary-button:focus{
+    color: var(--color-text);
+    outline: 2px solid blue;
+    background-color: rgb(224, 224, 255);
+}
+.secondary-button{
+    background-color: rgb(103, 136, 103);
+    color: var(--color-secondary);
+}
+.secondary-button:hover, .secondary-button:focus{
+    color: var(--color-text);
+    outline: 2px solid green;
+    background-color: rgb(224, 224, 255);
+}
+.delete-button{
+    background-color: red;
+    color: white;
+    padding: 0;
+}
+.delete-button:hover, .add-button:focus{
+    opacity: .5;
+}
+
+.add-button{
+    background-color: rgb(103, 136, 103);
+    color: var(--color-secondary);
+}
+.add-button:hover, .add-button:focus{
+    color: var(--color-text);
+    outline: 2px solid green;
+    background-color: rgb(224, 224, 255);
+}
+
+.circle{
+    font-size: var(--font-size-lg);
+    border-radius: 100%;
+    height: auto;
+    width: auto;
+    padding: 0;
 }
 /* ------------------------------------------  Preview Section -------------------------------------- */
 
-.preview-container
-{
-    height: auto;
-    overflow-y: scroll;
-}
+
 /* A4 Size paper */
 .cv-paper{
     width: 794px; 
     height: 1123px;
     margin: 2rem auto;
-    padding: 2rem;
+    padding: 3rem;
     background-color: #fff;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', sans-serif;
@@ -183,16 +260,6 @@ button{
     border-bottom: 2px solid black;
 }
 
-.title-two-items
-{
-    display: flex;
-    justify-content: space-between;
-    height: 20px;
-}
-
-.list-container{
-    margin-left: 1.76rem;
-}
 
 .preview-education-title{
     font-weight: 600;
@@ -203,22 +270,56 @@ button{
     font-weight: 400;
 }
 
-.delete-btn {
-    background-color: red;
-    color: white;
-    padding: 0;
-}
-.delete-btn:hover, .delete-btn:focus{
-    opacity: .5;
+
+.container-center{
+    padding: var(--space-md) 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.wrapper-two-items{
+
+
+#language_list, #skill_list{
+    list-style-type: none;
     display: grid;
-    grid-template-columns: 1fr 20px;
-    align-items: center;
-    gap: 8px;
+    grid-template-columns: repeat(4, 1fr);
 }
-.wrapper-two-items > button {
- width: 20px;
- height: 20px;
+
+.group-three-items{
+    display: flex;
+    justify-content: center;
+    gap: var(--space-md);
+}
+
+#preview-personal-information{
+    height: auto;
+}
+#preview-contact-information{
+    height: auto;
+}
+#preview-introduction{
+    min-height: 150px;
+    height: auto;
+}
+#preview-job-experience{
+    min-height: 500px;
+    height: auto;
+}
+
+#preview-education{
+    height: auto;
+}
+
+#preview-job-skill{
+    height: auto;
+}
+
+#preview-job-language{
+    height: auto;
+}
+
+.font-italics{
+    text-transform: italics;
 }
