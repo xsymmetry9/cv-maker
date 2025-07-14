@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-
     <title>CV Forge</title>
 </head>
 <body>
@@ -15,69 +14,110 @@
                 <h1>CV Forge</h1>
                 <form autocomplete="off">
                             <!-- Personal Section -->
-                    <h2>Personal Information</h2>
-                    <label>Name
-                        <input type="text" name="name" id="name" placeholder="Justin" autocomplete="off">
-                    </label>
-                    <label>Title
-                        <input type="text" name="title" id="title" placeholder="Front-End Engineer" autocomplete="off">
-                    </label>
+                    <section class="wrap-section" id="input_personal_information_section">
+                        <h2>Personal Information</h2>
+                        <div class="input-container" id="personal_information">    
+                        <div class="wrap-input">
+                            <label>Name
+                                <input type="text" name="name" id="name" placeholder="Justin">
+                            </label>
+                        </div>
+                        <div class="wrap-input"> 
+                            <label>Title
+                                <input type="text" name="title" id="title" placeholder="Front-End Engineer">
+                            </label>
+                        </div>
+                        </div>
+                    </section>
+                     <section class="wrap-section" id="input_contact_information_section">
+                        <h2>Contact Information</h2>
+                        <div class="input-container" id="contact_information">
 
-                    <h2>Contact Information</h2>
-                    <label>Email
-                        <input type="email" name="email" id="email" placeholder="terry@gmail.com" autocomplete="off">
-                    </label>
-
-                    <label>Address
-                        <input type="text" name="address" id="address" placeholder="10819 sw 110th ave, Miami, FL, USA" autocomplete="off">
-                    </label>
-
-                    <label>Phone Number
-                        <input type="tel"name="tel-number" id="tel-number" placeholder="(305) - 669 - 2919" autocomplete="off">
-                    </label>
-                    <label>Summary
-                        <textarea name="summary" id="summary" cols="30" rows="10" autocomplete="off"></textarea>
-                    </label>
+                        <div class="wrap-input">
+                            <label for="email">Email
+                                <input type="email" name="email" id="email" placeholder="terry@gmail.com">
+                            </label>
+                        </div>
+                        <div class="wrap-input">   
+                            <label for="address">Address
+                                <input type="text" name="address" id="address" placeholder="10819 sw 110th ave, Miami, FL, USA">
+                            </label></div>
+                        <div class="wrap-input">
+                             <label for="tel-number">Phone Number
+                                <input type="tel"name="tel-number" id="tel-number" placeholder="(305) - 669 - 2919">
+                            </label>
+                        </div>
+                        <div class="wrap-textarea">
+                            <label for="summary">Summary
+                                <textarea name="summary" id="summary" cols="30" rows="10" ></textarea>
+                            </label>
+                        </div>
+                        </div>
+                    </section>
                             <!-- Experience Section -->
-                    <h2>Experience</h2>
-                    <div class="" id="experience">
-                        <button id="btn-experience">Add experience</button>
+                     <section class="wrap-section" id="input_experience">
+                        <div class="wrapper-two-items">
+                            <h2>Experience</h2>
+                            <button class="add-button circle" id="btn-experience">+</button>
+                        </div>
+                        <div class="input-container" id="experience">
                             <!-- Experience goes here -->
-                    </div>
+                        </div>
+                    </section>
+                     <section class="wrap-section">
+                        <div class="wrapper-two-items">
+                            <h2>Education</h2>
+                            <button class="add-button circle" id="btn-education">+</button>
+                        </div>
                             <!-- Education Section -->
-                    <h2>Education</h2>
-                    <div class="input-section" id="education">
-                        <button id="btn-education">Add education</button>
+                        <div class="input-container" id="education">
                             <!-- Education goes here -->
-                    </div>
+                        </div>
+                    </section>
+                    
                             <!-- Skills Section -->
-                    <h2>Skills</h2>
-                    <div class="input-section" id="skills">
-                        <button id="btn-skill">Add a skill</button>
+                     <section class="wrap-section" id="input_skills">
+                        <div class="wrapper-two-items">
+                            <h2>Skills</h2>
+                            <button class="add-button circle" id="btn-skill">+</button>
+                        </div>
+                        <div class="input-container" id="skills">
                             <!-- Skills go here -->
-                    </div>
-                            <!-- Language Section -->
-                    <h2>Languages</h2>
-                    <div class="input-section" id="languages">
-                        <button id="btn-language">Add a language</button>
+                        </div>
+                    </section>
+                    
+                     <section class="wrap-section" id="input_language">
+                              <!-- Language Section -->
+                        <div class="wrapper-two-items">
+                            <h2>Languages</h2>
+                            <button class="add-button circle" id="btn-language">+</button>
+                        </div>
+                        <div class="input-container" id="languages">
                             <!-- Languages go here -->
+                        </div>
+                    </section>
+                    <div class="container-center">
+                        <button class="primary-button centered" id ="save">Save</button>
                     </div>
 
-                    
-                    <button id ="save">Save</button>
                 </form>
               
             </div>
             <div class="preview-container">
                 <div class="cv-paper">
-                    <h2 class="cv-name" id="preview-name">[Default name]</h2>
-                    <p class="cv-title" id="preview-title">A Front-End Engineer Enthusiast</p>
-                    <section class="cv-section-contact">
-                        <p  class="cv-email" id="preview-email">[Default email]</p>
-                        <p  class="cv-address" id="preview-address">10819 SW 11th AVE, Miami, FL, USA</p>
-                        <p  class="cv-tel" id="preview-tel-number">(305) 699 - 2919</p>
+                    <section id="preview-personal-information">
+                        <h2 class="cv-name" id="preview-name">[Default name]</h2>
+                        <p class="cv-title" id="preview-title">A Front-End Engineer Enthusiast</p>
                     </section>
-                    <section class="cv-section">
+            
+                    <section id="preview-contact-information">
+                        <div class="group-three-items">
+                            <p  class="cv-email" id="preview-email">[Default email]</p>
+                            <p  class="cv-address" id="preview-address">10819 SW 11th AVE, Miami, FL, USA</p>
+                            <p  class="cv-tel" id="preview-tel-number">(305) 699 - 2919</p>
+                        </div>
+                    </section>
+                    <section class="cv-section" id="preview-introduction">
                         <h2>Summary</h2>
                         <p id="preview-summary"></p>
 
