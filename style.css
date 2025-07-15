@@ -213,6 +213,7 @@ button{
     background-color: var(--color-add);
     color: var(--color-secondary);
     outline: 2px solid var(--color-add);
+    border: none;
 }
 .add-button:hover, .add-button:focus{
     color: var(--color-text);
