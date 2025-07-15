@@ -444,7 +444,8 @@ const plotExperience = (obj) => {
 
      //Adds a button to create a list of responsibilities
     const addJobHandler = document.createElement("button");
-    addJobHandler.textContent = "Add job description";
+    addJobHandler.textContent = "+";
+    addJobHandler.className="add-button circle";
     addJobHandler.dataset.key = id;
 
     addJobHandler.addEventListener(("click"), (e) => {
@@ -452,7 +453,16 @@ const plotExperience = (obj) => {
         const currentJobEntry = {id: generateRandomId(), entry: ""};
         cvData.experience[target].jobs.push(currentJobEntry);
         createJobEntry(id, currentJobEntry);
-    })
+    });
+
+    const containerTitleAndButton = document.createElement("div");
+    const descriptionTitle = createEl("h4");
+    
+    descriptionTitle.textContent = 'Job description';
+    containerTitleAndButton.appendChild(descriptionTitle);
+    containerTitleAndButton.appendChild(addJobHandler);
+    containerTitleAndButton.className = "wrapper-two-items";
+
     const unOrderedList = document.createElement("ul"); // Creates a section where user is allow to input their responsibility
     unOrderedList.id =`inputs-job-experience-${id}`;
 
@@ -505,6 +515,9 @@ const plotExperience = (obj) => {
         listOfJobs.appendChild(createList);
     }
 
+    [containerTitleAndButton, unOrderedList].forEach((item) => experienceWrapper.appendChild(item));
+    inputContainer.appendChild(experienceWrapper);
+
     // Preview Section
     const previewExperienceContainer = document.getElementById("preview-job-experience");
 
@@ -523,9 +536,7 @@ const plotExperience = (obj) => {
 
     jobs.forEach((jobEntry) => createJobEntry(id, jobEntry));
 
-    [addJobHandler, unOrderedList].forEach((item) => experienceWrapper.appendChild(item));
     [titleDateGroup, listOfJobs].forEach((item) => previewExperienceWrapper.appendChild(item));
-    inputContainer.appendChild(experienceWrapper);
     previewExperienceContainer.appendChild(previewExperienceWrapper);
 }
 const plotEducation = (item) =>{
